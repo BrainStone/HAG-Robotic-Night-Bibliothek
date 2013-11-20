@@ -1,5 +1,8 @@
 package core.templates.programm;
 
+import lejos.nxt.Button;
+import lejos.nxt.NXT;
+import lejos.nxt.Sound;
 import core.loader.ProgrammLoader;
 
 public abstract class Programm {
@@ -12,7 +15,7 @@ public abstract class Programm {
 	/**
 	 * Stopt das aktuelle Programm. Die Methode wartet maximal eine Sekunde um
 	 * das Programm beenden zu lassen. Sollte es in dieser Zeit nicht beendet
-	 * haben, wird ein sich wiederholender Warnton ausgegeben und man erhält die
+	 * haben, wird ein sich wiederholender Warnton ausgegeben und man erhï¿½lt die
 	 * Option das komplette Programm zu beenden!
 	 */
 	public final void kill() {
@@ -25,16 +28,21 @@ public abstract class Programm {
 		}
 
 		if (thread.isAlive()) {
-			System.err.println("Das Programm läuft immernoch!");
+			System.err.println("Das Programm lueuft immernoch!");
 			System.err
-					.println("Drücken Sie Esc um das komplette Programm zu beenden!");
+					.println("Druecken Sie Esc um das komplette Programm zu beenden!");
 
-			// TODO Warnton und Option zu vollständigen Beenden des Programms
+			Sound.playTone(1000, 500);
+			Sound.playTone(500, 500);
+
+			if (Button.ESCAPE.isDown()) {
+				NXT.shutDown();
+			}
 		}
 	}
 
 	/**
-	 * Gibt den Namn des Programms zurück.
+	 * Gibt den Namn des Programms zurï¿½ck.
 	 * 
 	 * @return Im standard
 	 */
@@ -43,8 +51,8 @@ public abstract class Programm {
 	}
 
 	/**
-	 * In dieser Funktion wird das eigentliche Programm ausgeführt im externen
-	 * Thread ausgeführt.<br>
+	 * In dieser Funktion wird das eigentliche Programm ausgefuehrt im externen
+	 * Thread ausgefuehrt.<br>
 	 * <b>Jedes Programm muss diese Methode implementieren!</b>
 	 */
 	public abstract void run();
