@@ -15,7 +15,7 @@ public abstract class Programm {
 	/**
 	 * Stopt das aktuelle Programm. Die Methode wartet maximal eine Sekunde um
 	 * das Programm beenden zu lassen. Sollte es in dieser Zeit nicht beendet
-	 * haben, wird ein sich wiederholender Warnton ausgegeben und man erh�lt die
+	 * haben, wird ein sich wiederholender Warnton ausgegeben und man erhält die
 	 * Option das komplette Programm zu beenden!
 	 */
 	public final void kill() {
@@ -28,9 +28,9 @@ public abstract class Programm {
 		}
 
 		if (thread.isAlive()) {
-			System.err.println("Das Programm lueuft immernoch!");
+			System.err.println("Das Programm läuft immernoch!");
 			System.err
-					.println("Druecken Sie Esc um das komplette Programm zu beenden!");
+					.println("Drücken Sie Esc um das komplette Programm zu beenden!");
 
 			Sound.playTone(1000, 500);
 			Sound.playTone(500, 500);
@@ -42,7 +42,7 @@ public abstract class Programm {
 	}
 
 	/**
-	 * Gibt den Namn des Programms zur�ck.
+	 * Gibt den Namn des Programms zurück.
 	 * 
 	 * @return Im standard
 	 */
