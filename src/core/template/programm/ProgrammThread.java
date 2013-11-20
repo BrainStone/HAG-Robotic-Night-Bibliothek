@@ -7,6 +7,11 @@ public class ProgrammThread extends Thread {
 		this.programm = programm;
 	}
 
+	/**
+	 * Startet das übergebene Unterprogramm und fängt im Notfall Exceptions ab,
+	 * um das ganze Programm nicht zu gefährden. Falls die
+	 * ProgrammEnde-Exception geworfen wurde, beendet der Thread einfach.
+	 */
 	@Override
 	public void run() {
 		try {

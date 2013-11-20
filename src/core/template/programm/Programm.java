@@ -13,8 +13,9 @@ public abstract class Programm {
 		ProgrammLoader.Programme.add(this);
 	}
 
+	// TESTME Bitte Töne testen!
 	/**
-	 * Stopt das aktuelle Programm. Die Methode wartet maximal eine Sekunde um
+	 * Stoppt das aktuelle Programm. Die Methode wartet maximal eine Sekunde um
 	 * das Programm beenden zu lassen. Sollte es in dieser Zeit nicht beendet
 	 * haben, wird ein sich wiederholender Warnton ausgegeben und man erhält die
 	 * Option das komplette Programm zu beenden!
@@ -31,29 +32,32 @@ public abstract class Programm {
 
 			Sound.playTone(1000, 500);
 			Sound.playTone(500, 500);
-			
-			while(thread.isAlive()) {
+
+			while (thread.isAlive()) {
 				if (Button.ESCAPE.isDown()) {
 					NXT.shutDown();
 				}
-				
+
+				Sound.playTone(500, 500);
+
 				Timing.warteAufBeenden(thread, 100);
 			}
 		}
 	}
 
+	// TESTME Möglicherweiße muss hier etwas anderes hin!
 	/**
-	 * Gibt den Namn des Programms zurück.
+	 * Gibt den Namen des Programms zurück.
 	 * 
-	 * @return Im standard
+	 * @return Im standard Fall den Klassennamen
 	 */
 	public String name() {
 		return this.getClass().toString();
 	}
 
 	/**
-	 * In dieser Funktion wird das eigentliche Programm ausgefuehrt im externen
-	 * Thread ausgefuehrt.<br>
+	 * In dieser Funktion wird das eigentliche Programm im externen Thread
+	 * ausgeführt.<br>
 	 * <b>Jedes Programm muss diese Methode implementieren!</b>
 	 */
 	public abstract void run();
