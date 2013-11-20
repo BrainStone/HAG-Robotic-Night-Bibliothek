@@ -1,9 +1,10 @@
-package core.templates.programm;
+package core.template.programm;
 
 import lejos.nxt.Button;
 import lejos.nxt.NXT;
 import lejos.nxt.Sound;
 import core.loader.ProgrammLoader;
+import core.template.util.Timing;
 
 public abstract class Programm {
 	private ProgrammThread thread = null;
@@ -21,11 +22,7 @@ public abstract class Programm {
 	public final void kill() {
 		thread.interrupt();
 
-		try {
-			thread.join(1000);
-		} catch (final InterruptedException e) {
-			e.printStackTrace();
-		}
+		Timing.warteAufBeenden(thread, 1000);
 
 		if (thread.isAlive()) {
 			System.err.println("Das Programm läuft immernoch!");
@@ -34,9 +31,13 @@ public abstract class Programm {
 
 			Sound.playTone(1000, 500);
 			Sound.playTone(500, 500);
-
-			if (Button.ESCAPE.isDown()) {
-				NXT.shutDown();
+			
+			while(thread.isAlive()) {
+				if (Button.ESCAPE.isDown()) {
+					NXT.shutDown();
+				}
+				
+				Timing.warteAufBeenden(thread, 100);
 			}
 		}
 	}
