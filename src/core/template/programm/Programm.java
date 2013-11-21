@@ -52,7 +52,12 @@ public abstract class Programm {
 	 * @return Im standard Fall den Klassennamen
 	 */
 	public String name() {
-		return this.getClass().toString();
+		try {
+			return this.getClass().toString();
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+			return (this.toString());
+		}
 	}
 
 	/**
