@@ -2,6 +2,7 @@ package core.loader;
 
 import java.util.ArrayList;
 
+import programme.TestProgramm;
 import core.template.programm.Programm;
 
 public final class ProgrammLoader {
@@ -10,5 +11,7 @@ public final class ProgrammLoader {
 
 	static {
 		// XXX Hier neue Instanzen der Programme erstellen
+		
+		new TestProgramm();
 	}
 }
