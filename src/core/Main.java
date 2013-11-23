@@ -11,7 +11,12 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(final String[] args) {
-		Menu<Programm> menu = new Menu<>(ProgrammLoader.Programme);
-		menu.auswahl().start();
+		Menu<Programm> menu = new Menu<Programm>(ProgrammLoader.Programme);
+		while(true){
+			Programm p = menu.auswahl();
+			synchronized (p) {
+				p.start();
+			}
+		}
 	}
 }

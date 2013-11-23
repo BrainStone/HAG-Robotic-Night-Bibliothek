@@ -34,41 +34,43 @@ public class Menu<TYPE> {
 	public TYPE auswahl() {
 		int size = objects.size();
 
-		TYPE selProg = null;
+		TYPE seltype = null;
 		int currPos = 0;
 		int top = 0;
 
-		while (selProg == null) {
-			if (Button.RIGHT.isDown() && currPos != size + 7) {
+		while (seltype == null) {
+			if (Button.RIGHT.isDown() && currPos != size - 1) {
 				currPos++;
 			} else if (Button.LEFT.isDown() && currPos != 0) {
 				currPos--;
 			} else if (Button.ENTER.isDown()) {
-				selProg = objects.get(currPos);
+				seltype = objects.get(currPos);
 			}
 
-			if (currPos - top >= 6 && top != size) {
+			if (currPos-top >= 6 && top < size-8) {
 				top++;
-			} else if (currPos - top <= 1 && top != 0) {
+			} else if (currPos-top <= 1 && top > 0) {
 				top--;
 			}
 
-			for (int i = top; i < top + size -2; i++) {
+			for (int i = 0; i < size; i++) {
 				String selmark = " ";
 				if (i == currPos) {
 					selmark = ">";
-				} else if (i == top + 7 && top != size) {
+				} else if (i-top == 7 && top+7 != size -1) {
 					selmark = "V";
-				} else if (i == top && top != 0) {
+				} else if (i-top == 0 && top > 0) {
 					selmark = "A";
 				}
 				
+				selmark = selmark +  i;
+				
 				// DEBUG
-				// System.out.println("for : " + i + " curr pos " + currPos+ " top " + top);
-				LCD.drawString(selmark + objects.get(i - top).toString(), 0, i - top);
+				//System.out.println("for : " + i + " curr pos " + currPos+ " top " + top + " size " + size);
+				LCD.drawString(selmark + objects.get(i).toString(), 0, i - top);
 			}
 		}
 		LCD.clearDisplay();
-		return selProg;
+		return seltype;
 	}
 }
