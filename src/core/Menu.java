@@ -49,7 +49,7 @@ public class Menu<TYPE> {
 
 			if (currPos - top >= 6 && top != size) {
 				top++;
-			} else if (currPos - top + 3 <= 1 && top != 0) {
+			} else if (currPos - top <= 1 && top != 0) {
 				top--;
 			}
 
