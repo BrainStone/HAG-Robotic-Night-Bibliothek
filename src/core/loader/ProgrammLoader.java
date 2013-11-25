@@ -11,7 +11,24 @@ public final class ProgrammLoader {
 
 	static {
 		// XXX Hier neue Instanzen der Programme erstellen
-		
+
+		new TestProgramm();
+		new TestProgramm();
+		new TestProgramm();
+		new TestProgramm();
+		new TestProgramm();
+		new TestProgramm();
+		new TestProgramm();
+		new TestProgramm();
+		new TestProgramm();
+		new TestProgramm();
+		new TestProgramm();
+		new TestProgramm();
+		new TestProgramm();
+		new TestProgramm();
+		new TestProgramm();
+		new TestProgramm();
+		new TestProgramm();
 		new TestProgramm();
 	}
 }

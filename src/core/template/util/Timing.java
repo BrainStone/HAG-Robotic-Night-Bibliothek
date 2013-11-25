@@ -9,27 +9,12 @@ public class Timing {
 	 * @param millisekunden
 	 *            Millisikeunde die gewarten werden.
 	 */
-	public static void warte(int millisekunden) {
-		warte(millisekunden, Thread.currentThread());
-	}
-
-	/**
-	 * Lässt den angegebenen Thread die angegebene Anzahl an Millisekunden
-	 * warten.<br>
-	 * Außerdem wirft diese Funktion die ProgrammEnde-Exception falls der Thread
-	 * unterbrochen werden soll.
-	 * 
-	 * @param millisekunden
-	 *            Millisikeunde die gewarten werden.
-	 * @param thread
-	 *            Der Thread der warten soll.
-	 */
-	public static void warte(int millisekunden, Thread thread) {
+	public synchronized static void warte(long millisekunden) {
 		Sonstiges.überprüfeProgrammStatus();
 
 		try {
-			thread.wait(millisekunden);
-		} catch (InterruptedException e) {
+			Thread.sleep(millisekunden);
+		} catch (final InterruptedException e) {
 			e.printStackTrace();
 		}
 
@@ -64,7 +49,7 @@ public class Timing {
 
 		try {
 			thread.join(millisekunden);
-		} catch (InterruptedException e) {
+		} catch (final InterruptedException e) {
 			e.printStackTrace();
 		}
 

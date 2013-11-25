@@ -32,45 +32,66 @@ public class Menu<TYPE> {
 	 * @return Das ausgewählte Objekt
 	 */
 	public TYPE auswahl() {
-		int size = objects.size();
-
+		final int size = objects.size();
+		String selmark;
 		TYPE seltype = null;
 		int currPos = 0;
 		int top = 0;
+		boolean escapeFrei = Button.ESCAPE.isUp();
+
+		LCD.setAutoRefresh(false);
 
 		while (seltype == null) {
-			if (Button.RIGHT.isDown() && currPos != size - 1) {
+			if (Button.ESCAPE.isDown() && escapeFrei) {
+				System.exit(0);
+			} else {
+				escapeFrei = true;
+			}
+
+			LCD.clearDisplay();
+
+			for (int i = 0; i < size; i++) {
+				// TODO Das hier mit mit Pixlelpfeilen ersetzten
+				if (i == currPos) {
+					selmark = ">";
+				} else if (((i - top) == 7) && ((top + 7) != (size - 1))) {
+					selmark = "V";
+				} else if (((i - top) == 0) && (top > 0)) {
+					selmark = "A";
+				} else {
+					selmark = " ";
+				}
+
+				selmark = selmark + i + " ";
+
+				// DEBUG
+				// System.out.println("for : " + i + " curr pos " + currPos+
+				// " top " + top + " size " + size);
+				LCD.drawString(selmark + objects.get(i).toString(), 0, i - top);
+			}
+
+			LCD.refresh();
+
+			Button.waitForAnyPress();
+
+			if (Button.RIGHT.isDown() && (currPos != (size - 1))) {
 				currPos++;
-			} else if (Button.LEFT.isDown() && currPos != 0) {
+			} else if (Button.LEFT.isDown() && (currPos != 0)) {
 				currPos--;
 			} else if (Button.ENTER.isDown()) {
 				seltype = objects.get(currPos);
 			}
 
-			if (currPos-top >= 6 && top < size-8) {
+			if (((currPos - top) >= 6) && (top < (size - 8))) {
 				top++;
-			} else if (currPos-top <= 1 && top > 0) {
+			} else if (((currPos - top) <= 1) && (top > 0)) {
 				top--;
 			}
-
-			for (int i = 0; i < size; i++) {
-				String selmark = " ";
-				if (i == currPos) {
-					selmark = ">";
-				} else if (i-top == 7 && top+7 != size -1) {
-					selmark = "V";
-				} else if (i-top == 0 && top > 0) {
-					selmark = "A";
-				}
-				
-				selmark = selmark +  i;
-				
-				// DEBUG
-				//System.out.println("for : " + i + " curr pos " + currPos+ " top " + top + " size " + size);
-				LCD.drawString(selmark + objects.get(i).toString(), 0, i - top);
-			}
 		}
+
+		LCD.setAutoRefresh(true);
 		LCD.clearDisplay();
+
 		return seltype;
 	}
 }
