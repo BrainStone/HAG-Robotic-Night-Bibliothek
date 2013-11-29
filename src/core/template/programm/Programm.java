@@ -1,7 +1,6 @@
 package core.template.programm;
 
 import lejos.nxt.Button;
-import lejos.nxt.NXT;
 import lejos.nxt.Sound;
 import core.loader.ProgrammLoader;
 import core.template.util.Timing;
@@ -13,7 +12,6 @@ public abstract class Programm {
 		ProgrammLoader.Programme.add(this);
 	}
 
-	// TESTME Bitte Töne testen!
 	/**
 	 * Stoppt das aktuelle Programm. Die Methode wartet maximal eine Sekunde um
 	 * das Programm beenden zu lassen. Sollte es in dieser Zeit nicht beendet
@@ -26,23 +24,24 @@ public abstract class Programm {
 		Timing.warteAufBeenden(thread, 1000);
 
 		if (thread.isAlive()) {
-			System.err.println("Das Programm läuft immernoch!");
-			System.err
-					.println("Drücken Sie Esc um das komplette Programm zu beenden!");
-
-			Sound.playTone(1000, 500);
-			Sound.playTone(500, 500);
+			System.err.println("Das Programm\n" + "laeuft immernoch");
+			System.err.println("Druecken Sie Esc" + "um das komplette"
+					+ "Programm zu\n" + "beenden!");
 
 			while (thread.isAlive()) {
 				if (Button.ESCAPE.isDown()) {
-					NXT.shutDown();
+					System.exit(0);
 				}
 
-				Sound.playTone(500, 500);
+				Sound.playTone(500, 50);
 
 				Timing.warteAufBeenden(thread, 100);
 			}
 		}
+	}
+
+	public boolean läuft() {
+		return thread.isAlive();
 	}
 
 	// TESTME Möglicherweiße muss hier etwas anderes hin!
@@ -54,9 +53,9 @@ public abstract class Programm {
 	public String name() {
 		try {
 			return this.getClass().toString();
-		} catch (NullPointerException e) {
+		} catch (final NullPointerException e) {
 			e.printStackTrace();
-			return (this.toString());
+			return (super.toString());
 		}
 	}
 
@@ -74,5 +73,10 @@ public abstract class Programm {
 		thread = new ProgrammThread(this);
 
 		thread.start();
+	}
+
+	@Override
+	public final String toString() {
+		return name();
 	}
 }

@@ -16,9 +16,9 @@ public class ProgrammThread extends Thread {
 	public void run() {
 		try {
 			programm.run();
-		} catch (ProgrammEnde ende) {
+		} catch (final ProgrammEnde ende) {
 			// Das Programm wurde beendet. Nichts machen
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			// Verhindere, dass das Programm komplett abstürzt!
 			e.printStackTrace();
 		}
