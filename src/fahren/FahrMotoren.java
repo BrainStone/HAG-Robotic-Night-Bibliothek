@@ -1,11 +1,24 @@
 package fahren;
 
+import lejos.nxt.Motor;
+import lejos.nxt.MotorPort;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.TachoMotorPort;
 
 public class FahrMotoren extends NXTRegulatedMotor {
-	private final NXTRegulatedMotor Links;
+	public static final FahrMotoren AB(int durchmesser) {
+		return new FahrMotoren(MotorPort.A, MotorPort.B, durchmesser);
+	}
 
+	public static final FahrMotoren AC(int durchmesser) {
+		return new FahrMotoren(MotorPort.A, MotorPort.C, durchmesser);
+	}
+
+	public static final FahrMotoren BC(int durchmesser) {
+		return new FahrMotoren(MotorPort.B, MotorPort.C, durchmesser);
+	}
+
+	private final NXTRegulatedMotor Links;
 	private final int durchmesserReifen;
 
 	public FahrMotoren(final TachoMotorPort Links, final TachoMotorPort Rechts,
@@ -28,15 +41,16 @@ public class FahrMotoren extends NXTRegulatedMotor {
 
 	public synchronized void gradeaus(final int cm,
 			final boolean immediateReturn) {
-		final int i = Math.round(((cm * 360) / durchmesserReifen) * (float) Math.PI);
+		final int i = Math.round(((cm * 360) / durchmesserReifen)
+				* (float) Math.PI);
 		this.rotate(i, immediateReturn);
 	}
-	
-	public void endMove(){
+
+	public void endMove() {
 		this.stop();
 		this.rotate(0, true);
 	}
-	
+
 	@Override
 	public void backward() {
 		super.backward();
