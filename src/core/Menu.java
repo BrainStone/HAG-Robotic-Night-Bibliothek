@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
+import lejos.nxt.Sound;
 
 /**
  * Menüobject : Einfaches Menü zur darstellung Verschiedener auswahlen.
@@ -13,6 +14,16 @@ import lejos.nxt.LCD;
  * 
  */
 public class Menu<TYPE> {
+	public static final String zahlZuText(int zahl, int ziffern) {
+		String tmp = String.valueOf(zahl);
+
+		while (tmp.length() < ziffern) {
+			tmp = "0" + tmp;
+		}
+
+		return tmp;
+	}
+
 	public ArrayList<TYPE> objects;
 
 	/**
@@ -23,6 +34,7 @@ public class Menu<TYPE> {
 	 *            ArrayList der Objekte im Menü
 	 */
 	public Menu(ArrayList<TYPE> objects) {
+		// TODO Letzte Position merken
 		this.objects = objects;
 	}
 
@@ -33,7 +45,8 @@ public class Menu<TYPE> {
 	 */
 	public TYPE auswahl() {
 		final int size = objects.size();
-		String selmark;
+		final int ziffern = (int) (Math.ceil(Math.log(size + 1)
+				/ Math.log(10.0)));
 		TYPE seltype = null;
 		int currPos = 0;
 		int top = 0;
@@ -51,33 +64,50 @@ public class Menu<TYPE> {
 			LCD.clearDisplay();
 
 			for (int i = 0; i < size; i++) {
-				// TODO Das hier mit mit Pixlelpfeilen ersetzten
 				if (i == currPos) {
-					selmark = ">";
+					for (int j = 0; j < 4; j++) {
+						for (int k = j; k < (7 - j); k++) {
+							LCD.setPixel(j, k + ((i - top) * LCD.CELL_HEIGHT),
+									1);
+						}
+					}
 				} else if (((i - top) == 7) && ((top + 7) != (size - 1))) {
-					selmark = "V";
+					for (int j = 0; j < 3; j++) {
+						for (int k = j; k < (5 - j); k++) {
+							LCD.setPixel(k, j + (7 * LCD.CELL_HEIGHT) + 4, 1);
+						}
+					}
 				} else if (((i - top) == 0) && (top > 0)) {
-					selmark = "A";
-				} else {
-					selmark = " ";
+					for (int j = 0; j < 3; j++) {
+						for (int k = j; k < (5 - j); k++) {
+							LCD.setPixel(k, 3 - j, 1);
+						}
+					}
 				}
-
-				selmark = selmark + i + " ";
 
 				// DEBUG
 				// System.out.println("for : " + i + " curr pos " + currPos+
 				// " top " + top + " size " + size);
-				LCD.drawString(selmark + objects.get(i).toString(), 0, i - top);
+				LCD.drawString(zahlZuText(i + 1, ziffern) + " "
+						+ objects.get(i).toString(), 1, i - top);
 			}
 
 			LCD.refresh();
 
 			Button.waitForAnyPress();
 
-			if (Button.RIGHT.isDown() && (currPos != (size - 1))) {
-				currPos++;
-			} else if (Button.LEFT.isDown() && (currPos != 0)) {
-				currPos--;
+			if (Button.RIGHT.isDown()) {
+				if (currPos != (size - 1)) {
+					currPos++;
+				} else {
+					Sound.playTone(700, 500);
+				}
+			} else if (Button.LEFT.isDown()) {
+				if (currPos != 0) {
+					currPos--;
+				} else {
+					Sound.playTone(600, 500);
+				}
 			} else if (Button.ENTER.isDown()) {
 				seltype = objects.get(currPos);
 			}
