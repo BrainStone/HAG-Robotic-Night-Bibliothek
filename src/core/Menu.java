@@ -24,7 +24,8 @@ public class Menu<TYPE> {
 		return tmp;
 	}
 
-	public ArrayList<TYPE> objects;
+	private final ArrayList<TYPE> objects;
+	private int altePos;
 
 	/**
 	 * Konstruiert ein neues Menü( {@link Object#toString()} wird als Name
@@ -34,10 +35,11 @@ public class Menu<TYPE> {
 	 *            ArrayList der Objekte im Menü
 	 */
 	public Menu(ArrayList<TYPE> objects) {
-		// TODO Letzte Position merken
 		this.objects = objects;
+		altePos = -1;
 	}
 
+	// TESTME Einfach testen.
 	/**
 	 * Zeichnet und Überprüft das eigentliche Menü
 	 * 
@@ -48,13 +50,27 @@ public class Menu<TYPE> {
 		final int ziffern = (int) (Math.ceil(Math.log(size + 1)
 				/ Math.log(10.0)));
 		TYPE seltype = null;
-		int currPos = 0;
-		int top = 0;
+		int currPos, top, bottom;
 		boolean escapeFrei = Button.ESCAPE.isUp();
 
 		LCD.setAutoRefresh(false);
 
+		altePos++;
+
+		if (altePos >= size) {
+			altePos = size - 1;
+		}
+
+		currPos = altePos;
+		top = altePos - 3;
+
+		if (top < 0) {
+			top = 0;
+		}
+
 		while (seltype == null) {
+			bottom = top + 8;
+
 			if (Button.ESCAPE.isDown() && escapeFrei) {
 				System.exit(0);
 			} else {
@@ -63,7 +79,7 @@ public class Menu<TYPE> {
 
 			LCD.clearDisplay();
 
-			for (int i = 0; i < size; i++) {
+			for (int i = top; (i < size) && (i < bottom); i++) {
 				if (i == currPos) {
 					for (int j = 0; j < 4; j++) {
 						for (int k = j; k < (7 - j); k++) {
@@ -107,6 +123,7 @@ public class Menu<TYPE> {
 				}
 			} else if (Button.ENTER.isDown()) {
 				seltype = objects.get(currPos);
+				altePos = currPos;
 			}
 
 			if (((currPos - top) >= 6) && (top < (size - 8))) {
