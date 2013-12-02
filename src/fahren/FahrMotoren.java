@@ -1,6 +1,5 @@
 package fahren;
 
-import lejos.nxt.Motor;
 import lejos.nxt.MotorPort;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.TachoMotorPort;
@@ -19,7 +18,7 @@ public class FahrMotoren extends NXTRegulatedMotor {
 	}
 
 	private final NXTRegulatedMotor Links;
-	private final int durchmesserReifen;
+	private int durchmesserReifen;
 
 	public FahrMotoren(final TachoMotorPort Links, final TachoMotorPort Rechts,
 			final int durchmesserReifen) {
@@ -29,26 +28,45 @@ public class FahrMotoren extends NXTRegulatedMotor {
 
 	}
 
-	public synchronized void drehen(final int grad) {
+	public synchronized void drehen(int grad, float speed) {
+		this.drehen(grad, speed, false);
+	}
+
+	public synchronized void drehen(int grad, float speed,
+			boolean immediateReturn) {
+		this.setSpeed(speed);
 		if (grad > 180) {
-			super.rotate(grad, false);
-			Links.rotate(-grad, false);
+			super.rotate(grad, true);
+			Links.rotate(-grad, immediateReturn);
 		} else {
-			super.rotate(-grad, false);
-			Links.rotate(grad, false);
+			super.rotate(-grad, true);
+			Links.rotate(grad, immediateReturn);
 		}
 	}
 
-	public synchronized void gradeaus(final int cm,
+	public synchronized void gradeaus(final int cm, float speed) {
+		this.gradeaus(cm, speed, false);
+	}
+
+	public synchronized void gradeaus(final int cm, float speed,
 			final boolean immediateReturn) {
+		this.setSpeed(speed);
 		final int i = Math.round(((cm * 360) / durchmesserReifen)
 				* (float) Math.PI);
 		this.rotate(i, immediateReturn);
 	}
 
+	public int getDurchmesser() {
+		return durchmesserReifen;
+	}
+
+	public void setDurchmesser(int durchmesser) {
+		this.durchmesserReifen = durchmesser;
+	}
+
 	public void endMove() {
 		this.stop();
-		this.rotate(0, true);
+		this.gradeaus(0, 0);
 	}
 
 	@Override
@@ -59,7 +77,7 @@ public class FahrMotoren extends NXTRegulatedMotor {
 
 	@Override
 	public void flt() {
-		super.flt();
+		super.flt(true);
 		Links.flt();
 	}
 
