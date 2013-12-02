@@ -13,7 +13,7 @@ public class TestProgramm extends Programm {
 	public void run() {
 		System.out.println("Start");
 
-		Timing.warte(/* 10 */00);
+		Timing.warte(1000);
 
 		System.out.println("Ende");
 	}
