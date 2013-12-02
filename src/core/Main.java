@@ -1,6 +1,9 @@
 package core;
 
+import java.io.File;
+
 import lejos.nxt.Button;
+import lejos.nxt.Sound;
 import core.loader.ProgrammLoader;
 import core.template.programm.Programm;
 
@@ -11,7 +14,9 @@ public class Main {
 	 * 
 	 * @param args
 	 */
-	public static void main(final String[] args) {
+	public static void main(String[] args) {
+		Sound.playSample(new File("NXT ready.wav"));
+
 		final Menu<Programm> menu = new Menu<Programm>(ProgrammLoader.Programme);
 
 		while (true) {
