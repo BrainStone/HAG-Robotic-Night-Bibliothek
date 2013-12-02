@@ -3,7 +3,7 @@ package core.template.programm;
 public class ProgrammThread extends Thread {
 	private final Programm programm;
 
-	public ProgrammThread(final Programm programm) {
+	public ProgrammThread(Programm programm) {
 		this.programm = programm;
 	}
 

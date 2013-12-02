@@ -44,20 +44,12 @@ public abstract class Programm {
 		return thread.isAlive();
 	}
 
-	// TESTME Möglicherweiße muss hier etwas anderes hin!
 	/**
 	 * Gibt den Namen des Programms zurück.
 	 * 
 	 * @return Im standard Fall den Klassennamen
 	 */
-	public String name() {
-		try {
-			return this.getClass().toString();
-		} catch (final NullPointerException e) {
-			e.printStackTrace();
-			return (super.toString());
-		}
-	}
+	public abstract String name();
 
 	/**
 	 * In dieser Funktion wird das eigentliche Programm im externen Thread

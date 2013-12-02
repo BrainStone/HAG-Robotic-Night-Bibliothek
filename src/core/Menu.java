@@ -85,9 +85,6 @@ public class Menu<TYPE> {
 					}
 				}
 
-				// DEBUG
-				// System.out.println("for : " + i + " curr pos " + currPos+
-				// " top " + top + " size " + size);
 				LCD.drawString(zahlZuText(i + 1, ziffern) + " "
 						+ objects.get(i).toString(), 1, i - top);
 			}
