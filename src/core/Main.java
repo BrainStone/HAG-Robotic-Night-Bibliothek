@@ -15,7 +15,11 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Sound.playSample(new File("NXT ready.wav"));
+		if(Sound.playSample(new File("NXT ready.wav")) < 0) {
+			Sound.playTone(1000, 100);
+			Sound.pause(125);
+			Sound.playTone(1500, 100);
+		}
 
 		final Menu<Programm> menu = new Menu<Programm>(ProgrammLoader.Programme);
 
