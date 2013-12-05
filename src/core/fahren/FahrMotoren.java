@@ -1,4 +1,4 @@
-package fahren;
+package core.fahren;
 
 import lejos.nxt.MotorPort;
 import lejos.nxt.NXTRegulatedMotor;
