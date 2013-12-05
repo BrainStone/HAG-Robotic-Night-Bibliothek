@@ -28,6 +28,12 @@ public class FahrMotoren extends NXTRegulatedMotor {
 
 	}
 
+	@Override
+	public void backward() {
+		super.backward();
+		Links.backward();
+	}
+
 	public synchronized void drehen(int grad, float speed) {
 		this.drehen(grad, speed, false);
 	}
@@ -44,35 +50,9 @@ public class FahrMotoren extends NXTRegulatedMotor {
 		}
 	}
 
-	public synchronized void gradeaus(final int cm, float speed) {
-		this.gradeaus(cm, speed, false);
-	}
-
-	public synchronized void gradeaus(final int cm, float speed,
-			final boolean immediateReturn) {
-		this.setSpeed(speed);
-		final int i = Math.round(((cm * 360) / durchmesserReifen)
-				* (float) Math.PI);
-		this.rotate(i, immediateReturn);
-	}
-
-	public int getDurchmesser() {
-		return durchmesserReifen;
-	}
-
-	public void setDurchmesser(int durchmesser) {
-		this.durchmesserReifen = durchmesser;
-	}
-
 	public void endMove() {
 		this.stop();
 		this.gradeaus(0, 0);
-	}
-
-	@Override
-	public void backward() {
-		super.backward();
-		Links.backward();
 	}
 
 	@Override
@@ -93,6 +73,22 @@ public class FahrMotoren extends NXTRegulatedMotor {
 		Links.forward();
 	}
 
+	public int getDurchmesser() {
+		return durchmesserReifen;
+	}
+
+	public synchronized void gradeaus(final int cm, float speed) {
+		this.gradeaus(cm, speed, false);
+	}
+
+	public synchronized void gradeaus(final int cm, float speed,
+			final boolean immediateReturn) {
+		this.setSpeed(speed);
+		final int i = Math.round(((cm * 360) / durchmesserReifen)
+				* (float) Math.PI);
+		this.rotate(i, immediateReturn);
+	}
+
 	@Deprecated
 	@Override
 	public void lock(final int power) {
@@ -110,6 +106,10 @@ public class FahrMotoren extends NXTRegulatedMotor {
 	public void setAcceleration(final int acceleration) {
 		super.setAcceleration(acceleration);
 		Links.setAcceleration(acceleration);
+	}
+
+	public void setDurchmesser(int durchmesser) {
+		durchmesserReifen = durchmesser;
 	}
 
 	@Override

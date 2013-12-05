@@ -64,7 +64,7 @@ public class Menu<TYPE> {
 		currPos = altePos;
 		top = altePos - 3;
 
-		if (top > size - 8) {
+		if (top > (size - 8)) {
 			top = size - 8;
 		}
 		if (top < 0) {

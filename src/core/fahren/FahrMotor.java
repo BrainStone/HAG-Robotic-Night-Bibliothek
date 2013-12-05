@@ -45,6 +45,34 @@ public class FahrMotor extends NXTRegulatedMotor {
 	}
 
 	/**
+	 * Lässt den Motor eine gewisse Distanz fahren. Die Funktion wartet nicht,
+	 * dass die Bewegung beendet ist.
+	 * 
+	 * @param distanz
+	 *            Die Distanz, die der Motor zurücklegen soll, in cm.
+	 */
+	public void fahre(double distanz) {
+		fahre(distanz, false);
+	}
+
+	/**
+	 * Lässt den Motor eine gewisse Distanz fahren.
+	 * 
+	 * @param distanz
+	 *            Die Distanz, die der Motor zurücklegen soll, in cm.
+	 * @param warte
+	 *            Gibt an, ob die Funktion darauf wartet, dass der Motot die
+	 *            Bewegung beendet hat.
+	 */
+	public void fahre(double distanz, boolean warte) {
+		if (durchmesser < 0.0)
+			throw new IllegalStateException(
+					"Der Durchmesser und Umfang hat keinen gültigen Wert.");
+
+		rotate((int) Math.round(Math.toDegrees(distanz / umfang)), !warte);
+	}
+
+	/**
 	 * Gibt den Durchmesser zurück.
 	 * 
 	 * @return Diese Funktion gibt nur den angegebenen Durchmesser des Rades in
@@ -84,34 +112,5 @@ public class FahrMotor extends NXTRegulatedMotor {
 		}
 
 		return this;
-	}
-
-	/**
-	 * Lässt den Motor eine gewisse Distanz fahren. Die Funktion wartet nicht,
-	 * dass die Bewegung beendet ist.
-	 * 
-	 * @param distanz
-	 *            Die Distanz, die der Motor zurücklegen soll, in cm.
-	 */
-	public void fahre(double distanz) {
-		fahre(distanz, false);
-	}
-
-	/**
-	 * Lässt den Motor eine gewisse Distanz fahren.
-	 * 
-	 * @param distanz
-	 *            Die Distanz, die der Motor zurücklegen soll, in cm.
-	 * @param warte
-	 *            Gibt an, ob die Funktion darauf wartet, dass der Motot die
-	 *            Bewegung beendet hat.
-	 */
-	public void fahre(double distanz, boolean warte) {
-		if (durchmesser < 0.0) {
-			throw new IllegalStateException(
-					"Der Durchmesser und Umfang hat keinen gültigen Wert.");
-		}
-
-		rotate((int) Math.round(Math.toDegrees(distanz / umfang)), !warte);
 	}
 }
