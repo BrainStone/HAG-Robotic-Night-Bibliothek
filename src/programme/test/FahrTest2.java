@@ -13,17 +13,19 @@ public class FahrTest2 extends Programm {
 
 	@Override
 	public void run() {
-		FahrMotor.C.setDurchmesser(10);
+		FahrMotor.C.setDurchmesser(5.5);
 		FahrMotor.C.fahre(10);
-		
-		while(Button.waitForAnyPress() != Button.ID_ENTER)
+
+		while (Button.waitForAnyPress() != Button.ID_ENTER) {
 			;
-		
+		}
+
 		FahrMotor.C.fahre(30);
-		
-		while(Button.waitForAnyPress() != Button.ID_ENTER)
+
+		while (Button.waitForAnyPress() != Button.ID_ENTER) {
 			;
-		
+		}
+
 		FahrMotor.C.fahre(2);
 	}
 }

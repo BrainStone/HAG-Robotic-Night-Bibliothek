@@ -11,7 +11,6 @@ public class FahrMotor extends NXTRegulatedMotor {
 
 	/** Durchmesser des Rades in cm */
 	private double durchmesser;
-	private double umfang;
 
 	/**
 	 * Privater Konstruktor. Wird nur intern verwendet. Er setzt den durchmesser
@@ -41,7 +40,6 @@ public class FahrMotor extends NXTRegulatedMotor {
 		super(port);
 
 		this.durchmesser = durchmesser;
-		umfang = this.durchmesser * Math.PI;
 	}
 
 	/**
@@ -69,7 +67,8 @@ public class FahrMotor extends NXTRegulatedMotor {
 			throw new IllegalStateException(
 					"Der Durchmesser und Umfang hat keinen gültigen Wert.");
 
-		rotate((int) Math.round(Math.toDegrees(distanz / umfang)), !warte);
+		rotate((int) Math.round(Math.toDegrees((distanz / durchmesser) * 2.0)),
+				!warte);
 	}
 
 	/**
@@ -84,17 +83,6 @@ public class FahrMotor extends NXTRegulatedMotor {
 	}
 
 	/**
-	 * Gibt den Umfang zurück.
-	 * 
-	 * @return Diese Funktion gibt nur den berechneten Umfang des Rades in cm
-	 *         zurück.<br>
-	 *         Ist er <code>< 0</code>, dann kann man den Wert noch ändern.
-	 */
-	public double getUmfang() {
-		return umfang;
-	}
-
-	/**
 	 * Mit dieser Funktion kann man nachträglich den Durchmesser des Rades
 	 * einstellen.<br>
 	 * Dies wird aber nur gemacht, falls der Duchmesser <code>< 0</code> ist.
@@ -105,10 +93,9 @@ public class FahrMotor extends NXTRegulatedMotor {
 	 * @return Sich selbst, um eine Verkettung von ähnlichen Funktionen zu
 	 *         ermöglichen.
 	 */
-	public FahrMotor setDurchmesser(float durchmesser) {
+	public FahrMotor setDurchmesser(double durchmesser) {
 		if (this.durchmesser < 0.0) {
 			this.durchmesser = durchmesser;
-			umfang = this.durchmesser * Math.PI;
 		}
 
 		return this;

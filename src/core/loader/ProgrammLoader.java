@@ -12,7 +12,7 @@ public final class ProgrammLoader {
 
 	static {
 		// XXX Hier neue Instanzen der Programme erstellen
-		
+
 		new FahrTest2();
 		new TestProgramm();
 		new TestProgramm();
