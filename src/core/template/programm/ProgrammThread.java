@@ -1,5 +1,8 @@
 package core.template.programm;
 
+import core.fahren.FahrMotor;
+import core.template.util.Timing;
+
 public class ProgrammThread extends Thread {
 	private final Programm programm;
 
@@ -16,11 +19,20 @@ public class ProgrammThread extends Thread {
 	public void run() {
 		try {
 			programm.run();
+
+			while (FahrMotor.A.isMoving() || FahrMotor.B.isMoving()
+					|| FahrMotor.C.isMoving()) {
+				Timing.warte(100);
+			}
 		} catch (final ProgrammEnde ende) {
 			// Das Programm wurde beendet. Nichts machen
 		} catch (final Exception e) {
 			// Verhindere, dass das Programm komplett abstürzt!
 			e.printStackTrace();
 		}
+
+		FahrMotor.A.motorFrei();
+		FahrMotor.B.motorFrei();
+		FahrMotor.C.motorFrei();
 	}
 }

@@ -83,6 +83,13 @@ public class FahrMotor extends NXTRegulatedMotor {
 	}
 
 	/**
+	 * Entsperrt den Motor. Danach kann man ihn frei drehen.
+	 */
+	public void motorFrei() {
+		suspendRegulation();
+	}
+
+	/**
 	 * Mit dieser Funktion kann man nachträglich den Durchmesser des Rades
 	 * einstellen.<br>
 	 * Dies wird aber nur gemacht, falls der Duchmesser <code>< 0</code> ist.
