@@ -15,7 +15,7 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		if(Sound.playSample(new File("NXT ready.wav")) < 0) {
+		if (Sound.playSample(new File("NXT ready.wav")) < 0) {
 			Sound.playTone(1000, 100);
 			Sound.pause(125);
 			Sound.playTone(1500, 100);
@@ -32,6 +32,7 @@ public class Main {
 
 				if (Button.ESCAPE.isDown()) {
 					p.kill();
+					menu.abgebrochen();
 				}
 			}
 		}
