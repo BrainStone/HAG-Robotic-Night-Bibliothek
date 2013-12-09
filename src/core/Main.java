@@ -32,6 +32,7 @@ public class Main {
 
 				if (Button.ESCAPE.isDown()) {
 					p.kill();
+					menu.abgebrochen();
 				}
 			}
 		}

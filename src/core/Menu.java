@@ -26,6 +26,7 @@ public class Menu<TYPE> {
 
 	private final ArrayList<TYPE> objects;
 	private int altePos;
+	private boolean normalBeendet;
 
 	/**
 	 * Konstruiert ein neues Menü( {@link Object#toString()} wird als Name
@@ -36,7 +37,12 @@ public class Menu<TYPE> {
 	 */
 	public Menu(ArrayList<TYPE> objects) {
 		this.objects = objects;
-		altePos = -1;
+		altePos = 0;
+		normalBeendet = false;
+	}
+
+	public void abgebrochen() {
+		normalBeendet = false;
 	}
 
 	// TESTME Einfach testen.
@@ -55,14 +61,19 @@ public class Menu<TYPE> {
 
 		LCD.setAutoRefresh(false);
 
-		altePos++;
+		if (normalBeendet) {
+			altePos++;
+		}
+
+		// Zurücksetzen
+		normalBeendet = true;
 
 		if (altePos >= size) {
 			altePos = size - 1;
 		}
 
 		currPos = altePos;
-		top = altePos - 3;
+		top = altePos - 2;
 
 		if (top > (size - 8)) {
 			top = size - 8;
