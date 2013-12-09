@@ -10,5 +10,6 @@ bin/*
 
 
 .settings/*
+.metadata/*
 .classpath
 .project

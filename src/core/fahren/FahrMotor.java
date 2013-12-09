@@ -11,6 +11,8 @@ public class FahrMotor extends NXTRegulatedMotor {
 
 	/** Durchmesser des Rades in cm */
 	private double durchmesser;
+	/** Die Richtung der Bewegung */
+	private byte richtung;
 
 	/**
 	 * Privater Konstruktor. Wird nur intern verwendet. Er setzt den durchmesser
@@ -40,6 +42,8 @@ public class FahrMotor extends NXTRegulatedMotor {
 		super(port);
 
 		this.durchmesser = durchmesser;
+
+		setAcceleration(3000);
 	}
 
 	/**
@@ -67,8 +71,8 @@ public class FahrMotor extends NXTRegulatedMotor {
 			throw new IllegalStateException(
 					"Der Durchmesser und Umfang hat keinen gültigen Wert.");
 
-		rotate((int) Math.round(Math.toDegrees((distanz / durchmesser) * 2.0)),
-				!warte);
+		rotate(((int) Math.round(Math.toDegrees((distanz / durchmesser) * 2.0)))
+				* richtung, !warte);
 	}
 
 	/**
@@ -106,5 +110,44 @@ public class FahrMotor extends NXTRegulatedMotor {
 		}
 
 		return this;
+	}
+
+	/**
+	 * Setzt die Geschwindigkeit des Motors auf den angegebenen Wert.<br>
+	 * Sollte die Geschwindigkeit negativ sein, wird die Fahrtrichtung
+	 * umgekehrt.<br>
+	 * Falls die Geschwindigkeit die maximale Geschwindigkeit überschreitet,
+	 * wird die Geschwindiogkeit auf diese gesetzt.
+	 * 
+	 * @param geschwindigkeit
+	 *            Die Geschwindigkeit in cm/s.<br>
+	 *            Ist sie negativ, fährt der Motor rückwärts, ist sie
+	 *            betragsmäßig zu groß, wird sie auf die maximale
+	 *            Geschwindigkeit gesetzt.
+	 * @return Sich selbst, um eine Verkettung von ähnlichen Funktionen zu
+	 *         ermöglichen.
+	 */
+	public FahrMotor setGeschwindigkeit(double geschwindigkeit) {
+		richtung = (byte) Math.signum(geschwindigkeit);
+
+		geschwindigkeit = Math.abs(geschwindigkeit);
+
+		if (geschwindigkeit > getMaximaleGeschwindigkeit()) {
+			geschwindigkeit = getMaximaleGeschwindigkeit();
+		}
+
+		setSpeed((float) Math.round(Math
+				.toDegrees((geschwindigkeit / durchmesser) * 2.0)));
+
+		return this;
+	}
+
+	/**
+	 * Eine Funktion, die die maximal mögliche Geschwindigkeit zurückgibt.
+	 * 
+	 * @return Die momentan maximal mögliche Geschwindigkeit in cm/s.
+	 */
+	public double getMaximaleGeschwindigkeit() {
+		return Math.toRadians(getMaxSpeed()) / 2 * durchmesser;
 	}
 }

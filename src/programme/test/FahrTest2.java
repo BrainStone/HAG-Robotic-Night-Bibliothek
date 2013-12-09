@@ -13,15 +13,25 @@ public class FahrTest2 extends Programm {
 
 	@Override
 	public void run() {
-		FahrMotor.C.setDurchmesser(5.5);
-		FahrMotor.C.fahre(10);
+		FahrMotor.A.setDurchmesser(5.5).setGeschwindigkeit(-100);
+		FahrMotor.B.setDurchmesser(5.5).setGeschwindigkeit(100);
+		
+		System.out.println(FahrMotor.A.getMaximaleGeschwindigkeit());
+		System.out.println(FahrMotor.B.getMaximaleGeschwindigkeit());
+		
+		ButtonHelfer.warteAufEnter();
+		
+		FahrMotor.A.fahre(10);
+		FahrMotor.B.fahre(10);
 
 		ButtonHelfer.warteAufEnter();
 
-		FahrMotor.C.fahre(30);
+		FahrMotor.A.fahre(30);
+		FahrMotor.B.fahre(30);
 
 		ButtonHelfer.warteAufEnter();
 
-		FahrMotor.C.fahre(2);
+		FahrMotor.A.fahre(2);
+		FahrMotor.B.fahre(2);
 	}
 }
