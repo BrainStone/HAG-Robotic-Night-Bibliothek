@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import programme.test.FahrTest;
 import programme.test.TestProgramm;
+import programme.util.MotorenMessen;
+import core.fahren.FahrMotor;
 import core.template.programm.Programm;
 
 public final class ProgrammLoader {
@@ -14,6 +16,9 @@ public final class ProgrammLoader {
 		// XXX Hier neue Instanzen der Programme erstellen
 
 		new FahrTest();
+		new MotorenMessen(new FahrMotor[] { FahrMotor.A.setDurchmesser(5.5),
+				FahrMotor.B.setDurchmesser(5.5),
+				FahrMotor.C.setDurchmesser(5.5) });
 		new TestProgramm();
 	}
 }
