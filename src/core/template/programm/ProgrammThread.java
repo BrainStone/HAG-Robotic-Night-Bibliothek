@@ -1,5 +1,6 @@
 package core.template.programm;
 
+import lejos.nxt.LCD;
 import core.fahren.FahrMotor;
 import core.template.util.Timing;
 
@@ -17,6 +18,8 @@ public class ProgrammThread extends Thread {
 	 */
 	@Override
 	public void run() {
+		LCD.clear();
+
 		try {
 			programm.run();
 

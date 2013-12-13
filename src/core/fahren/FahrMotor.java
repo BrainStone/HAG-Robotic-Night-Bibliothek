@@ -43,7 +43,8 @@ public class FahrMotor extends NXTRegulatedMotor {
 
 		this.durchmesser = durchmesser;
 
-		setAcceleration(3000);
+		setBeschleunigung(25);
+		setGeschwindigkeit(10);
 	}
 
 	/**
@@ -71,8 +72,7 @@ public class FahrMotor extends NXTRegulatedMotor {
 			throw new IllegalStateException(
 					"Der Durchmesser und Umfang hat keinen gültigen Wert.");
 
-		rotate(((int) Math.round(Math.toDegrees((distanz / durchmesser) * 2.0)))
-				* richtung, !warte);
+		rotate((int) (streckeZuRad(distanz) * richtung), !warte);
 	}
 
 	/**
@@ -87,10 +87,46 @@ public class FahrMotor extends NXTRegulatedMotor {
 	}
 
 	/**
+	 * Eine Funktion, die die maximal mögliche Geschwindigkeit zurückgibt.
+	 * 
+	 * @return Die momentan maximal mögliche Geschwindigkeit in cm/s.
+	 */
+	public double getMaximaleGeschwindigkeit() {
+		return radZuStrecke(getMaxSpeed());
+	}
+
+	/**
 	 * Entsperrt den Motor. Danach kann man ihn frei drehen.
 	 */
 	public void motorFrei() {
 		suspendRegulation();
+	}
+
+	/**
+	 * Rechnet Radianten in eine Strecke um.
+	 * 
+	 * @param rad
+	 *            Die umzuwandelnde Rotation in Rad
+	 * @return Stecke in cm
+	 */
+	public double radZuStrecke(double rad) {
+		return (Math.toRadians(rad) / 2) * durchmesser;
+	}
+
+	/**
+	 * Setzt die Beschleunigung auf den Betrag des angegebenen Wertes.
+	 * 
+	 * @param beschleunigung
+	 *            Die Beschleunigung in cm/s².<br>
+	 *            Sollte die Beschleunigung negativ sein wird der positive Wert
+	 *            verwendet.
+	 * @return Sich selbst, um eine Verkettung von ähnlichen Funktionen zu
+	 *         ermöglichen.
+	 */
+	public FahrMotor setBeschleunigung(double beschleunigung) {
+		setAcceleration((int) streckeZuRad(Math.abs(beschleunigung)));
+
+		return this;
 	}
 
 	/**
@@ -136,18 +172,19 @@ public class FahrMotor extends NXTRegulatedMotor {
 			geschwindigkeit = getMaximaleGeschwindigkeit();
 		}
 
-		setSpeed((float) Math.round(Math
-				.toDegrees((geschwindigkeit / durchmesser) * 2.0)));
+		setSpeed((float) streckeZuRad(geschwindigkeit));
 
 		return this;
 	}
 
 	/**
-	 * Eine Funktion, die die maximal mögliche Geschwindigkeit zurückgibt.
+	 * Rechnet eine Strecke in Radianten um.
 	 * 
-	 * @return Die momentan maximal mögliche Geschwindigkeit in cm/s.
+	 * @param strecke
+	 *            Die umzuwandelnnde Strecke in cm
+	 * @return Rotation in Rad
 	 */
-	public double getMaximaleGeschwindigkeit() {
-		return Math.toRadians(getMaxSpeed()) / 2 * durchmesser;
+	public double streckeZuRad(double strecke) {
+		return Math.toDegrees((strecke / durchmesser) * 2.0);
 	}
 }

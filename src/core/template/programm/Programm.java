@@ -1,6 +1,7 @@
 package core.template.programm;
 
 import lejos.nxt.Button;
+import lejos.nxt.LCD;
 import lejos.nxt.Sound;
 import core.loader.ProgrammLoader;
 import core.template.util.Timing;
@@ -24,6 +25,8 @@ public abstract class Programm {
 		Timing.warteAufBeenden(thread, 1000);
 
 		if (thread.isAlive()) {
+			LCD.clear();
+
 			System.err.println("Das Programm\n" + "laeuft immernoch");
 			System.err.println("Druecken Sie Esc" + "um das komplette"
 					+ "Programm zu\n" + "beenden!");

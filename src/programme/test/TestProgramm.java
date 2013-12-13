@@ -1,4 +1,4 @@
-package programme;
+package programme.test;
 
 import core.template.programm.Programm;
 import core.template.util.Timing;

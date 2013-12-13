@@ -4,23 +4,23 @@ import core.fahren.FahrMotor;
 import core.template.programm.Programm;
 import core.template.util.ButtonHelfer;
 
-public class FahrTest2 extends Programm {
+public class FahrTest extends Programm {
 
 	@Override
 	public String name() {
-		return "FahrTest2";
+		return "FahrTest";
 	}
 
 	@Override
 	public void run() {
 		FahrMotor.A.setDurchmesser(5.5).setGeschwindigkeit(-100);
 		FahrMotor.B.setDurchmesser(5.5).setGeschwindigkeit(100);
-		
+
 		System.out.println(FahrMotor.A.getMaximaleGeschwindigkeit());
 		System.out.println(FahrMotor.B.getMaximaleGeschwindigkeit());
-		
+
 		ButtonHelfer.warteAufEnter();
-		
+
 		FahrMotor.A.fahre(10);
 		FahrMotor.B.fahre(10);
 
