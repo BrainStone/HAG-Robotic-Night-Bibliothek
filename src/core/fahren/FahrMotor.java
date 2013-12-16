@@ -9,6 +9,18 @@ public class FahrMotor extends NXTRegulatedMotor {
 	public static final FahrMotor B = new FahrMotor(MotorPort.B);
 	public static final FahrMotor C = new FahrMotor(MotorPort.C);
 
+	public static FahrMotor A(double durchmesser) {
+		return new FahrMotor(MotorPort.A, durchmesser);
+	}
+
+	public static FahrMotor B(double durchmesser) {
+		return new FahrMotor(MotorPort.B, durchmesser);
+	}
+
+	public static FahrMotor C(double durchmesser) {
+		return new FahrMotor(MotorPort.C, durchmesser);
+	}
+
 	/** Durchmesser des Rades in cm */
 	private double durchmesser;
 	/** Die Richtung der Bewegung */
@@ -43,7 +55,7 @@ public class FahrMotor extends NXTRegulatedMotor {
 
 		this.durchmesser = durchmesser;
 
-		setBeschleunigung(25);
+		setBeschleunigung(50);
 		setGeschwindigkeit(10);
 	}
 
@@ -64,7 +76,7 @@ public class FahrMotor extends NXTRegulatedMotor {
 	 * @param distanz
 	 *            Die Distanz, die der Motor zurücklegen soll, in cm.
 	 * @param warte
-	 *            Gibt an, ob die Funktion darauf wartet, dass der Motot die
+	 *            Gibt an, ob die Funktion darauf wartet, dass der Motor die
 	 *            Bewegung beendet hat.
 	 */
 	public void fahre(double distanz, boolean warte) {
@@ -153,7 +165,7 @@ public class FahrMotor extends NXTRegulatedMotor {
 	 * Sollte die Geschwindigkeit negativ sein, wird die Fahrtrichtung
 	 * umgekehrt.<br>
 	 * Falls die Geschwindigkeit die maximale Geschwindigkeit überschreitet,
-	 * wird die Geschwindiogkeit auf diese gesetzt.
+	 * wird die Geschwindigkeit auf diese gesetzt.
 	 * 
 	 * @param geschwindigkeit
 	 *            Die Geschwindigkeit in cm/s.<br>
