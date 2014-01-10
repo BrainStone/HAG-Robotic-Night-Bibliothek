@@ -111,7 +111,12 @@ public class FahrMotor extends NXTRegulatedMotor {
 	 * Entsperrt den Motor. Danach kann man ihn frei drehen.
 	 */
 	public void motorFrei() {
-		suspendRegulation();
+		flt();
+		
+		if(isMoving() || isStalled())
+		{
+			System.out.println(this.toString() + ": " + isMoving() + ", " + isStalled());
+		}
 	}
 
 	/**
