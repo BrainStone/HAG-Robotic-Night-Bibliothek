@@ -2,15 +2,15 @@ package core.sensor;
 
 import java.util.ArrayList;
 
+import lejos.nxt.Button;
 import lejos.nxt.ColorSensor;
-import lejos.nxt.ColorSensor.Color;
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.SoundSensor;
 import lejos.nxt.TouchSensor;
 import lejos.nxt.UltrasonicSensor;
 
-public abstract class SensorHandler {
+public class SensorHandler {
 
 	// TODO : ArrayList
 	private ArrayList<SensorPort> lichtSensorPort = null;
@@ -25,20 +25,33 @@ public abstract class SensorHandler {
 	private ArrayList<SoundSensor> soundSensor = null;
 	private ArrayList<ColorSensor> farbSensor = null;
 
+	private ISensorHandler isensorhandler;
+
 	@SuppressWarnings("deprecation")
-	public SensorHandler() {
-		lichtSensorPort = new ArrayList<SensorPort>(getDefaultLichtSensorPort());
-		druckSensorPort = new ArrayList<SensorPort>(getDefaultDruckSensorPort());
-		ultraschallSensorPort = new ArrayList<SensorPort>(
-				getDefaultUltraschallSensorPort());
-		soundSensorPort = new ArrayList<SensorPort>(getDefaultSoundSensorPort());
-		farbSensorPort = new ArrayList<SensorPort>(getDefaultFarbSensorPort());
+	public SensorHandler(ISensorHandler i) {
+		lichtSensorPort = new ArrayList<SensorPort>();
+		druckSensorPort = new ArrayList<SensorPort>();
+		ultraschallSensorPort = new ArrayList<SensorPort>();
+		soundSensorPort = new ArrayList<SensorPort>();
+		farbSensorPort = new ArrayList<SensorPort>();
+		if (i.getDefaultLichtSensorPort() != null)
+			lichtSensorPort.addAll(i.getDefaultLichtSensorPort());
+		if (i.getDefaultDruckSensorPort() != null)
+			lichtSensorPort.addAll(i.getDefaultDruckSensorPort());
+		if (i.getDefaultUltraschallSensorPort() != null)
+			lichtSensorPort.addAll(i.getDefaultUltraschallSensorPort());
+		if (i.getDefaultSoundSensorPort() != null)
+			lichtSensorPort.addAll(i.getDefaultSoundSensorPort());
+		if (i.getDefaultFarbSensorPort() != null)
+			lichtSensorPort.addAll(i.getDefaultFarbSensorPort());
 
 		lichtSensor = new ArrayList<LightSensor>();
 		druckSensor = new ArrayList<TouchSensor>();
 		ultraschallSensor = new ArrayList<UltrasonicSensor>();
 		soundSensor = new ArrayList<SoundSensor>();
 		farbSensor = new ArrayList<ColorSensor>();
+
+		isensorhandler = i;
 
 		for (SensorPort s : lichtSensorPort) {
 			lichtSensor.add(new LightSensor(s));
@@ -56,26 +69,6 @@ public abstract class SensorHandler {
 			farbSensor.add(new ColorSensor(s));
 		}
 	}
-
-	public abstract void licht(SensorPort s, int hellichkeit, int lichtColor);
-
-	public abstract void druck(SensorPort s);
-
-	public abstract void ultraschall(SensorPort s, int abstand);
-
-	public abstract void sound(SensorPort s, int lautstärke);
-
-	public abstract void farbe(SensorPort s, Color farbe, int FlutLichtFarbe);
-
-	public abstract SensorPort[] getDefaultLichtSensorPort();
-
-	public abstract SensorPort[] getDefaultDruckSensorPort();
-
-	public abstract SensorPort[] getDefaultUltraschallSensorPort();
-
-	public abstract SensorPort[] getDefaultSoundSensorPort();
-
-	public abstract SensorPort[] getDefaultFarbSensorPort();
 
 	public SensorPort[] getLichtSensorPort() {
 		return (SensorPort[]) lichtSensorPort.toArray();
@@ -125,27 +118,50 @@ public abstract class SensorHandler {
 
 	public void update() {
 		for (LightSensor s : lichtSensor) {
-			this.licht(lichtSensorPort.get(lichtSensor.indexOf(s)),
+			isensorhandler.licht(lichtSensorPort.get(lichtSensor.indexOf(s)),
 					s.getLightValue(), s.getFloodlight());
 		}
 		for (TouchSensor s : druckSensor) {
 			if (s.isPressed()) {
-				this.druck(druckSensorPort.get(druckSensor.indexOf(s)));
+				isensorhandler
+						.druck(druckSensorPort.get(druckSensor.indexOf(s)));
 			}
 		}
 		for (ColorSensor s : farbSensor) {
-			this.farbe(farbSensorPort.get(farbSensor.indexOf(s)), s.getColor(),
-					s.getFloodlight());
+			isensorhandler.farbe(farbSensorPort.get(farbSensor.indexOf(s)),
+					s.getColor(), s.getFloodlight());
 		}
 		for (SoundSensor s : soundSensor) {
-			this.sound(soundSensorPort.get(soundSensor.indexOf(s)), s.readValue());
+			isensorhandler.sound(soundSensorPort.get(soundSensor.indexOf(s)),
+					s.readValue());
 		}
-		for (UltrasonicSensor s : ultraschallSensor){
-			int i =s.getDistance();
-			if(i > 255){
-				this.ultraschall(ultraschallSensorPort.get(ultraschallSensor.indexOf(s)), s.getDistance());
+		for (UltrasonicSensor s : ultraschallSensor) {
+			int i = s.getDistance();
+			if (i > 255) {
+				isensorhandler
+						.ultraschall(ultraschallSensorPort
+								.get(ultraschallSensor.indexOf(s)), s
+								.getDistance());
 			}
 		}
+	}
+
+	public void kalibrireLicht(SensorPort s) {
+		System.out.println("Das helle Licht");
+		Button.waitForAnyPress();
+		lichtSensor.get(lichtSensorPort.indexOf(s)).calibrateHigh();
+		System.out.println("Das dunkle Licht");
+		Button.waitForAnyPress();
+		lichtSensor.get(lichtSensorPort.indexOf(s)).calibrateLow();
+	}
+
+	public void kalibrireFarb(SensorPort s) {
+		System.out.println("Die helle Farbe");
+		Button.waitForAnyPress();
+		farbSensor.get(farbSensorPort.indexOf(s)).calibrateHigh();
+		System.out.println("Die dunkle Farbe");
+		Button.waitForAnyPress();
+		farbSensor.get(farbSensorPort.indexOf(s)).calibrateHigh();
 	}
 
 }
