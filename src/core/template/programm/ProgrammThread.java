@@ -2,6 +2,7 @@ package core.template.programm;
 
 import lejos.nxt.LCD;
 import core.fahren.FahrMotor;
+import core.template.util.ButtonHelfer;
 import core.template.util.Timing;
 
 public class ProgrammThread extends Thread {
@@ -32,6 +33,8 @@ public class ProgrammThread extends Thread {
 		} catch (final Exception e) {
 			// Verhindere, dass das Programm komplett abstürzt!
 			e.printStackTrace();
+			
+			ButtonHelfer.warteAufEnter();
 		}
 		
 		FahrMotor.A.motorFrei();

@@ -6,19 +6,19 @@ import lejos.nxt.TachoMotorPort;
 
 public class FahrMotor extends NXTRegulatedMotor {
 	public static final FahrMotor A = new FahrMotor(MotorPort.A);
-	public static final FahrMotor B = new FahrMotor(MotorPort.B);
-	public static final FahrMotor C = new FahrMotor(MotorPort.C);
-
+	public static FahrMotor B = new FahrMotor(MotorPort.B);
+	public static FahrMotor C = new FahrMotor(MotorPort.C);
+	
 	public static FahrMotor A(double durchmesser) {
-		return new FahrMotor(MotorPort.A, durchmesser);
+		return A = new FahrMotor(MotorPort.A, durchmesser);
 	}
 
 	public static FahrMotor B(double durchmesser) {
-		return new FahrMotor(MotorPort.B, durchmesser);
+		return B = new FahrMotor(MotorPort.B, durchmesser);
 	}
 
 	public static FahrMotor C(double durchmesser) {
-		return new FahrMotor(MotorPort.C, durchmesser);
+		return C = new FahrMotor(MotorPort.C, durchmesser);
 	}
 
 	/** Durchmesser des Rades in cm */
@@ -55,8 +55,10 @@ public class FahrMotor extends NXTRegulatedMotor {
 
 		this.durchmesser = durchmesser;
 
-		setBeschleunigung(50);
-		setGeschwindigkeit(10);
+		if (this.durchmesser != -1.0) {
+			setBeschleunigung(50);
+			setGeschwindigkeit(10);
+		}
 	}
 
 	/**
@@ -112,11 +114,6 @@ public class FahrMotor extends NXTRegulatedMotor {
 	 */
 	public void motorFrei() {
 		flt();
-		
-		if(isMoving() || isStalled())
-		{
-			System.out.println(this.toString() + ": " + isMoving() + ", " + isStalled());
-		}
 	}
 
 	/**

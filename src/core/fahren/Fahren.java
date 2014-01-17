@@ -54,10 +54,10 @@ public class Fahren {
 		final double strecke = (Math.toRadians(grad) * abstand) / 2.0;
 
 		RECHTS.fahre(strecke);
-		LINKS.fahre(-strecke, warte);
+		LINKS.fahre(-strecke);
 
 		if (warte) {
-			while (RECHTS.isMoving()) {
+			while (RECHTS.isMoving() || LINKS.isMoving()) {
 				Timing.warte(1);
 			}
 		}
@@ -85,10 +85,10 @@ public class Fahren {
 	 */
 	public void fahre(double distanz, boolean warte) {
 		RECHTS.fahre(distanz);
-		LINKS.fahre(distanz, warte);
+		LINKS.fahre(distanz);
 
 		if (warte) {
-			while (RECHTS.isMoving()) {
+			while (RECHTS.isMoving() || LINKS.isMoving()) {
 				Timing.warte(1);
 			}
 		}
