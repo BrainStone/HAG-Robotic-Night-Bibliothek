@@ -26,9 +26,9 @@ public class SensorHandler {
 	private ArrayList<ColorSensor> farbSensor = null;
 
 	private ISensorHandler isensorhandler;
-
+	
 	@SuppressWarnings("deprecation")
-	public SensorHandler(ISensorHandler i) {
+	public SensorHandler(ISensorLaoder i){
 		lichtSensorPort = new ArrayList<SensorPort>();
 		druckSensorPort = new ArrayList<SensorPort>();
 		ultraschallSensorPort = new ArrayList<SensorPort>();
@@ -50,9 +50,7 @@ public class SensorHandler {
 		ultraschallSensor = new ArrayList<UltrasonicSensor>();
 		soundSensor = new ArrayList<SoundSensor>();
 		farbSensor = new ArrayList<ColorSensor>();
-
-		isensorhandler = i;
-
+		
 		for (SensorPort s : lichtSensorPort) {
 			lichtSensor.add(new LightSensor(s));
 		}
@@ -68,6 +66,12 @@ public class SensorHandler {
 		for (SensorPort s : farbSensorPort) {
 			farbSensor.add(new ColorSensor(s));
 		}
+	}
+	
+	
+	public SensorHandler(ISensorHandler i) {
+		this((ISensorLaoder) i);
+		isensorhandler = i;
 	}
 
 	public SensorPort[] getLichtSensorPort() {
@@ -89,6 +93,27 @@ public class SensorHandler {
 	public SensorPort[] getFarbSensorPort() {
 		return (SensorPort[]) farbSensorPort.toArray();
 	}
+	
+	public LightSensor getLightSensor(SensorPort s){
+		return lichtSensor.get(lichtSensorPort.indexOf(s));
+	}
+	
+	public UltrasonicSensor getUltraschallSensor(SensorPort s){
+		return ultraschallSensor.get(ultraschallSensorPort.indexOf(s));
+	}
+	
+	public SoundSensor getSoundSensor(SensorPort s){
+		return soundSensor.get(soundSensorPort.indexOf(s));
+	}
+	
+	public TouchSensor getDruckSensor(SensorPort s){
+		return druckSensor.get(druckSensorPort.indexOf(s));
+	}
+	
+	public ColorSensor getFarbSensor(SensorPort s){
+		return farbSensor.get(farbSensorPort.indexOf(s));
+	}
+	
 
 	@SuppressWarnings("deprecation")
 	public void setLichtSensorPort(SensorPort... s) {
@@ -115,7 +140,7 @@ public class SensorHandler {
 	public void setFarbSensorPort(SensorPort... s) {
 		farbSensorPort = new ArrayList<SensorPort>(s);
 	}
-
+	
 	public void update() {
 		for (LightSensor s : lichtSensor) {
 			isensorhandler.licht(lichtSensorPort.get(lichtSensor.indexOf(s)),
