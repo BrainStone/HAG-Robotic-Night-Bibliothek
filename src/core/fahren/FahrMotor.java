@@ -6,19 +6,37 @@ import lejos.nxt.TachoMotorPort;
 
 public class FahrMotor extends NXTRegulatedMotor {
 	public static final FahrMotor A = new FahrMotor(MotorPort.A);
-	public static FahrMotor B = new FahrMotor(MotorPort.B);
-	public static FahrMotor C = new FahrMotor(MotorPort.C);
+	public static final FahrMotor B = new FahrMotor(MotorPort.B);
+	public static final FahrMotor C = new FahrMotor(MotorPort.C);
 	
 	public static FahrMotor A(double durchmesser) {
-		return A = new FahrMotor(MotorPort.A, durchmesser);
+		A.durchmesser = durchmesser;
+		A.richtung = 1;
+		
+		A.setBeschleunigung(50);
+		A.setGeschwindigkeit(10);
+		
+		return A;
 	}
 
 	public static FahrMotor B(double durchmesser) {
-		return B = new FahrMotor(MotorPort.B, durchmesser);
+		B.durchmesser = durchmesser;
+		B.richtung = 1;
+		
+		B.setBeschleunigung(50);
+		B.setGeschwindigkeit(10);
+		
+		return B;
 	}
 
 	public static FahrMotor C(double durchmesser) {
-		return C = new FahrMotor(MotorPort.C, durchmesser);
+		C.durchmesser = durchmesser;
+		C.richtung = 1;
+		
+		C.setBeschleunigung(50);
+		C.setGeschwindigkeit(10);
+		
+		return C;
 	}
 
 	/** Durchmesser des Rades in cm */
@@ -35,30 +53,10 @@ public class FahrMotor extends NXTRegulatedMotor {
 	 *            oder {@link MotorPort#C}).
 	 */
 	private FahrMotor(TachoMotorPort port) {
-		this(port, -1.0);
-	}
-
-	/**
-	 * Dieser Motor erzeugt einen neuen Fahrmotor am angegebenen Port. Der Motor
-	 * verwendet den angebenen Durchmesser, um Distanzen zu berechnen.
-	 * 
-	 * @param port
-	 *            Der Port des Motors ({@link MotorPort#A}, {@link MotorPort#B}
-	 *            oder {@link MotorPort#C}).
-	 * @param durchmesser
-	 *            Der Durchmesser des Rades in cm.<br>
-	 *            <i>Ist er <code>< 0</code>, kann man ihn noch nachträglich mit
-	 *            {@link FahrMot#setDurchmesser(int durchmesser)} ändern.</i>
-	 */
-	private FahrMotor(TachoMotorPort port, double durchmesser) {
 		super(port);
-
-		this.durchmesser = durchmesser;
-
-		if (this.durchmesser != -1.0) {
-			setBeschleunigung(50);
-			setGeschwindigkeit(10);
-		}
+		
+		durchmesser = -1.0;
+		richtung = 1;
 	}
 
 	/**
