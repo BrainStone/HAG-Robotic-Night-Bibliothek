@@ -3,6 +3,7 @@ package core.loader;
 import java.util.ArrayList;
 
 import programme.test.FahrTest;
+import programme.test.SensorTest;
 import programme.test.TestProgramm;
 import programme.util.MotorenMessen;
 import core.fahren.FahrMotor;
@@ -20,5 +21,6 @@ public final class ProgrammLoader {
 				FahrMotor.B.setDurchmesser(5.5),
 				FahrMotor.C.setDurchmesser(5.5) });
 		new TestProgramm();
+		new SensorTest();
 	}
 }
