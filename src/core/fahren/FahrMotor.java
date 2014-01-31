@@ -9,6 +9,7 @@ public class FahrMotor extends NXTRegulatedMotor {
 	public static final FahrMotor B = new FahrMotor(MotorPort.B);
 	public static final FahrMotor C = new FahrMotor(MotorPort.C);
 	
+	// DOCME
 	public static FahrMotor A(double durchmesser) {
 		A.durchmesser = durchmesser;
 		A.richtung = 1;
@@ -19,6 +20,7 @@ public class FahrMotor extends NXTRegulatedMotor {
 		return A;
 	}
 
+	// DOCME
 	public static FahrMotor B(double durchmesser) {
 		B.durchmesser = durchmesser;
 		B.richtung = 1;
@@ -29,6 +31,7 @@ public class FahrMotor extends NXTRegulatedMotor {
 		return B;
 	}
 
+	// DOCME
 	public static FahrMotor C(double durchmesser) {
 		C.durchmesser = durchmesser;
 		C.richtung = 1;
