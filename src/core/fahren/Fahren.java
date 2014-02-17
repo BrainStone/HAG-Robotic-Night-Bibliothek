@@ -2,41 +2,117 @@ package core.fahren;
 
 import core.template.util.Timing;
 
+/**
+ * Diese Klasse ist ein Wrapperklasse zum einfachen Ansteuern der Fahrmotoren.
+ * 
+ * @author Yannick Schinko
+ * 
+ */
 public class Fahren {
+	/**
+	 * Diese Funktion erzeugt ein Objekt mit dem rechten Motor an A und dem
+	 * linken an B.
+	 * 
+	 * @param abstand
+	 *            Der Radabstand in cm
+	 * @param durchmesser
+	 *            Der Durchmesser der Räder in cm
+	 * @return Eine voreingestellte Instanz dieser Klasse
+	 */
 	public static Fahren AB(double abstand, double durchmesser) {
 		return new Fahren(FahrMotor.A(durchmesser), FahrMotor.B(durchmesser),
 				abstand);
 	}
 
+	/**
+	 * Diese Funktion erzeugt ein Objekt mit dem rechten Motor an A und dem
+	 * linken an C.
+	 * 
+	 * @param abstand
+	 *            Der Radabstand in cm
+	 * @param durchmesser
+	 *            Der Durchmesser der Räder in cm
+	 * @return Eine voreingestellte Instanz dieser Klasse
+	 */
 	public static Fahren AC(double abstand, double durchmesser) {
 		return new Fahren(FahrMotor.A(durchmesser), FahrMotor.C(durchmesser),
 				abstand);
 	}
 
+	/**
+	 * Diese Funktion erzeugt ein Objekt mit dem rechten Motor an B und dem
+	 * linken an A.
+	 * 
+	 * @param abstand
+	 *            Der Radabstand in cm
+	 * @param durchmesser
+	 *            Der Durchmesser der Räder in cm
+	 * @return Eine voreingestellte Instanz dieser Klasse
+	 */
 	public static Fahren BA(double abstand, double durchmesser) {
 		return new Fahren(FahrMotor.B(durchmesser), FahrMotor.A(durchmesser),
 				abstand);
 	}
 
+	/**
+	 * Diese Funktion erzeugt ein Objekt mit dem rechten Motor an B und dem
+	 * linken an C.
+	 * 
+	 * @param abstand
+	 *            Der Radabstand in cm
+	 * @param durchmesser
+	 *            Der Durchmesser der Räder in cm
+	 * @return Eine voreingestellte Instanz dieser Klasse
+	 */
 	public static Fahren BC(double abstand, double durchmesser) {
 		return new Fahren(FahrMotor.B(durchmesser), FahrMotor.C(durchmesser),
 				abstand);
 	}
 
+	/**
+	 * Diese Funktion erzeugt ein Objekt mit dem rechten Motor an C und dem
+	 * linken an A.
+	 * 
+	 * @param abstand
+	 *            Der Radabstand in cm
+	 * @param durchmesser
+	 *            Der Durchmesser der Räder in cm
+	 * @return Eine voreingestellte Instanz dieser Klasse
+	 */
 	public static Fahren CA(double abstand, double durchmesser) {
 		return new Fahren(FahrMotor.C(durchmesser), FahrMotor.A(durchmesser),
 				abstand);
 	}
 
+	/**
+	 * Diese Funktion erzeugt ein Objekt mit dem rechten Motor an C und dem
+	 * linken an B.
+	 * 
+	 * @param abstand
+	 *            Der Radabstand in cm
+	 * @param durchmesser
+	 *            Der Durchmesser der Räder in cm
+	 * @return Eine voreingestellte Instanz dieser Klasse
+	 */
 	public static Fahren CB(double abstand, double durchmesser) {
 		return new Fahren(FahrMotor.C(durchmesser), FahrMotor.B(durchmesser),
 				abstand);
 	}
 
-	private final FahrMotor RECHTS, LINKS;
+	public final FahrMotor RECHTS, LINKS;
 
 	private final double abstand;
 
+	/**
+	 * Initiert das Objekt und die Motoren.
+	 * 
+	 * @param rechts
+	 *            Rechter Motor
+	 * @param links
+	 *            linker Motor
+	 * @param abstand
+	 *            Radabstand in cm
+	 */
 	private Fahren(FahrMotor rechts, FahrMotor links, double abstand) {
 		RECHTS = rechts;
 		LINKS = links;
@@ -46,12 +122,30 @@ public class Fahren {
 				LINKS.getMaximaleGeschwindigkeit()));
 	}
 
+	/**
+	 * Dreht den Robotor um seine Achse. Die Funktion wartet nicht, dass die
+	 * Bewegung beendet ist.
+	 * 
+	 * @param grad
+	 *            Anzahl an Grad der Drehung nach rechts.<br>
+	 *            <small>Negative Werte nach links.</small>
+	 */
 	public void drehe(double grad) {
 		drehe(grad, false);
 	}
 
+	/**
+	 * Dreht den Robotor um seine Achse.
+	 * 
+	 * @param grad
+	 *            Anzahl an Grad der Drehung nach rechts.<br>
+	 *            <small>Negative Werte nach links.</small>
+	 * @param warte
+	 *            Gibt an, ob die Funktion darauf wartet, dass der Motor die
+	 *            Bewegung beendet hat.
+	 */
 	public void drehe(double grad, boolean warte) {
-		final double strecke = (Math.toRadians(grad) * abstand) / 2.0;
+		final double strecke = Math.toRadians(grad) * (abstand / 2.0);
 
 		RECHTS.fahre(strecke);
 		LINKS.fahre(-strecke);
@@ -80,8 +174,8 @@ public class Fahren {
 	 * @param distanz
 	 *            Die Distanz, die die Motoren zurücklegen soll, in cm.
 	 * @param warte
-	 *            Gibt an, ob die Funktion darauf wartet, dass die Motoren die
-	 *            Bewegung beendet haben.
+	 *            Gibt an, ob die Funktion darauf wartet, dass der Motor die
+	 *            Bewegung beendet hat.
 	 */
 	public void fahre(double distanz, boolean warte) {
 		RECHTS.fahre(distanz);
