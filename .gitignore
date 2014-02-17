@@ -8,7 +8,6 @@
 bin/*
 /bin
 
-
 .settings/*
 .metadata/*
 .classpath
