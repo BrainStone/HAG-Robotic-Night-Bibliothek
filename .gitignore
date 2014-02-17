@@ -10,3 +10,7 @@ bin/*
 
 
 .settings/*
+.metadata/*
+.classpath
+.gitconfig
+.project
