@@ -5,8 +5,12 @@
 *.war
 *.ear
 
-bin/*
-/bin
+bin/
 
+.settings/
+.metadata/
+.classpath
+.project
 
-.settings/*
+*.nxd
+*.nxj
