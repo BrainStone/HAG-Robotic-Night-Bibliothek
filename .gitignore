@@ -8,7 +8,5 @@
 bin/*
 /bin
 
+
 .settings/*
-.metadata/*
-.classpath
-.project
