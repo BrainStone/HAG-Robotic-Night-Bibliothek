@@ -200,6 +200,6 @@ public class FahrMotor extends NXTRegulatedMotor {
 	 * @return Rotation in Rad
 	 */
 	public double streckeZuRad(double strecke) {
-		return Math.toDegrees((strecke / durchmesser) * 2.0);
+		return Math.toDegrees(strecke / (durchmesser / 2.0));
 	}
 }

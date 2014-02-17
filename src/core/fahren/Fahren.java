@@ -99,7 +99,7 @@ public class Fahren {
 				abstand);
 	}
 
-	private final FahrMotor RECHTS, LINKS;
+	public final FahrMotor RECHTS, LINKS;
 
 	private final double abstand;
 
@@ -145,7 +145,7 @@ public class Fahren {
 	 *            Bewegung beendet hat.
 	 */
 	public void drehe(double grad, boolean warte) {
-		final double strecke = (Math.toRadians(grad) * abstand) / 2.0;
+		final double strecke = Math.toRadians(grad) * (abstand / 2.0);
 
 		RECHTS.fahre(strecke);
 		LINKS.fahre(-strecke);
