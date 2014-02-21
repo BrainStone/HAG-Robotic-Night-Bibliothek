@@ -28,7 +28,7 @@ public class SensorHandler {
 	private ISensorHandler isensorhandler;
 	
 	@SuppressWarnings("deprecation")
-	public SensorHandler(ISensorLaoder i){
+	public SensorHandler(ISensorHandler i) {
 		lichtSensorPort = new ArrayList<SensorPort>();
 		druckSensorPort = new ArrayList<SensorPort>();
 		ultraschallSensorPort = new ArrayList<SensorPort>();
@@ -37,14 +37,14 @@ public class SensorHandler {
 		if (i.getDefaultLichtSensorPort() != null)
 			lichtSensorPort.addAll(i.getDefaultLichtSensorPort());
 		if (i.getDefaultDruckSensorPort() != null)
-			lichtSensorPort.addAll(i.getDefaultDruckSensorPort());
+			druckSensorPort.addAll(i.getDefaultDruckSensorPort());
 		if (i.getDefaultUltraschallSensorPort() != null)
-			lichtSensorPort.addAll(i.getDefaultUltraschallSensorPort());
+			ultraschallSensorPort.addAll(i.getDefaultUltraschallSensorPort());
 		if (i.getDefaultSoundSensorPort() != null)
-			lichtSensorPort.addAll(i.getDefaultSoundSensorPort());
+			soundSensorPort.addAll(i.getDefaultSoundSensorPort());
 		if (i.getDefaultFarbSensorPort() != null)
-			lichtSensorPort.addAll(i.getDefaultFarbSensorPort());
-
+			farbSensorPort.addAll(i.getDefaultFarbSensorPort());
+		
 		lichtSensor = new ArrayList<LightSensor>();
 		druckSensor = new ArrayList<TouchSensor>();
 		ultraschallSensor = new ArrayList<UltrasonicSensor>();
@@ -66,11 +66,6 @@ public class SensorHandler {
 		for (SensorPort s : farbSensorPort) {
 			farbSensor.add(new ColorSensor(s));
 		}
-	}
-	
-	
-	public SensorHandler(ISensorHandler i) {
-		this((ISensorLaoder) i);
 		isensorhandler = i;
 	}
 
@@ -165,10 +160,10 @@ public class SensorHandler {
 			if (i > 255) {
 				isensorhandler
 						.ultraschall(ultraschallSensorPort
-								.get(ultraschallSensor.indexOf(s)), s
-								.getDistance());
+								.get(ultraschallSensor.indexOf(s)), i);
 			}
 		}
+		
 	}
 
 	public void kalibrireLicht(SensorPort s) {
