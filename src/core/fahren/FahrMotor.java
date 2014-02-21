@@ -7,15 +7,15 @@ public class FahrMotor extends Motor {
 	public static final FahrMotor A = new FahrMotor(MotorPort.A);
 	public static final FahrMotor B = new FahrMotor(MotorPort.B);
 	public static final FahrMotor C = new FahrMotor(MotorPort.C);
-	
+
 	// DOCME
 	public static FahrMotor A(double durchmesser) {
 		A.durchmesser = durchmesser;
 		A.richtung = 1;
-		
+
 		A.setBeschleunigung(50);
 		A.setGeschwindigkeit(10);
-		
+
 		return A;
 	}
 
@@ -23,10 +23,10 @@ public class FahrMotor extends Motor {
 	public static FahrMotor B(double durchmesser) {
 		B.durchmesser = durchmesser;
 		B.richtung = 1;
-		
+
 		B.setBeschleunigung(50);
 		B.setGeschwindigkeit(10);
-		
+
 		return B;
 	}
 
@@ -34,10 +34,10 @@ public class FahrMotor extends Motor {
 	public static FahrMotor C(double durchmesser) {
 		C.durchmesser = durchmesser;
 		C.richtung = 1;
-		
+
 		C.setBeschleunigung(50);
 		C.setGeschwindigkeit(10);
-		
+
 		return C;
 	}
 
@@ -49,7 +49,7 @@ public class FahrMotor extends Motor {
 	// DOCME
 	public FahrMotor(TachoMotorPort port) {
 		super(port);
-		
+
 		durchmesser = -1.0;
 		richtung = 1;
 	}

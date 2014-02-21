@@ -11,7 +11,7 @@ public class FahrTest extends Programm {
 
 	@Override
 	public void run() {
-		Fahren fahren = Fahren.AB(13.6, 5.6);
+		final Fahren fahren = Fahren.AB(13.6, 5.6);
 
 		fahren.fahre(10, true);
 		fahren.drehe(90, true);
