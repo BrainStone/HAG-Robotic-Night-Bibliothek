@@ -31,6 +31,7 @@ public class SensorTest extends Programm implements ISensorHandler {
 
 	@Override
 	public void ultraschall(SensorPort s, int abstand) {
+		System.out.println(abstand); 
 
 	}
 
@@ -51,8 +52,7 @@ public class SensorTest extends Programm implements ISensorHandler {
 
 	@Override
 	public SensorPort[] getDefaultLichtSensorPort() {
-		SensorPort[] result = { SensorPort.S1 };
-		return result;
+		return null;
 	}
 
 	@Override
@@ -62,7 +62,8 @@ public class SensorTest extends Programm implements ISensorHandler {
 
 	@Override
 	public SensorPort[] getDefaultUltraschallSensorPort() {
-		return null;
+		SensorPort[] result = { SensorPort.S4 };
+		return result;
 	}
 
 	@Override
