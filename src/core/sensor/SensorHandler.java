@@ -27,6 +27,10 @@ public class SensorHandler {
 
 	private ISensorHandler isensorhandler;
 	
+	/**
+	 * Eine Neue Sensor handler instance
+	 * @param i Ein ISensorHandler
+	 */
 	@SuppressWarnings("deprecation")
 	public SensorHandler(ISensorHandler i) {
 		lichtSensorPort = new ArrayList<SensorPort>();
@@ -136,6 +140,9 @@ public class SensorHandler {
 		farbSensorPort = new ArrayList<SensorPort>(s);
 	}
 	
+	/**
+	 * Updated die sensoren
+	 */
 	public void update() {
 		for (LightSensor s : lichtSensor) {
 			isensorhandler.licht(lichtSensorPort.get(lichtSensor.indexOf(s)),

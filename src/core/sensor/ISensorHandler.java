@@ -22,7 +22,19 @@ public interface ISensorHandler{
 	 * @param abstand Der Gemessene Abstand
 	 */
 	public abstract void ultraschall(SensorPort s, int abstand);
+	/**
+	 *  Wird bei einem ton aufgerufen
+	 * @param s Der Port
+	 * @param lautstärke
+	 */
 	public abstract void sound(SensorPort s, int lautstärke);
+	
+	/**
+	 * Wie bei farbe aufgerufen
+	 * @param s Der Port
+	 * @param farbe Die farbe
+	 * @param FlutLichtFarbe Die farbe Des lichts
+	 */
 	public abstract void farbe(SensorPort s, Color farbe, int FlutLichtFarbe);
 	
 
