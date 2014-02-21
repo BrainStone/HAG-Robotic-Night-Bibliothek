@@ -1,10 +1,9 @@
 package core.fahren;
 
 import lejos.nxt.MotorPort;
-import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.TachoMotorPort;
 
-public class FahrMotor extends NXTRegulatedMotor {
+public class FahrMotor extends Motor {
 	public static final FahrMotor A = new FahrMotor(MotorPort.A);
 	public static final FahrMotor B = new FahrMotor(MotorPort.B);
 	public static final FahrMotor C = new FahrMotor(MotorPort.C);
@@ -47,15 +46,8 @@ public class FahrMotor extends NXTRegulatedMotor {
 	/** Die Richtung der Bewegung */
 	private byte richtung;
 
-	/**
-	 * Privater Konstruktor. Wird nur intern verwendet. Er setzt den durchmesser
-	 * auf -1, d.h. man kann ihn verändern.
-	 * 
-	 * @param port
-	 *            Der Port des Motors ({@link MotorPort#A}, {@link MotorPort#B}
-	 *            oder {@link MotorPort#C}).
-	 */
-	private FahrMotor(TachoMotorPort port) {
+	// DOCME
+	public FahrMotor(TachoMotorPort port) {
 		super(port);
 		
 		durchmesser = -1.0;
@@ -87,7 +79,7 @@ public class FahrMotor extends NXTRegulatedMotor {
 			throw new IllegalStateException(
 					"Der Durchmesser und Umfang hat keinen gültigen Wert.");
 
-		rotate((int) (streckeZuRad(distanz) * richtung), !warte);
+		motor.rotate((int) (streckeZuRad(distanz) * richtung), !warte);
 	}
 
 	/**
@@ -107,14 +99,7 @@ public class FahrMotor extends NXTRegulatedMotor {
 	 * @return Die momentan maximal mögliche Geschwindigkeit in cm/s.
 	 */
 	public double getMaximaleGeschwindigkeit() {
-		return radZuStrecke(getMaxSpeed());
-	}
-
-	/**
-	 * Entsperrt den Motor. Danach kann man ihn frei drehen.
-	 */
-	public void motorFrei() {
-		flt();
+		return radZuStrecke(motor.getMaxSpeed());
 	}
 
 	/**
@@ -139,7 +124,7 @@ public class FahrMotor extends NXTRegulatedMotor {
 	 *         ermöglichen.
 	 */
 	public FahrMotor setBeschleunigung(double beschleunigung) {
-		setAcceleration((int) streckeZuRad(Math.abs(beschleunigung)));
+		motor.setAcceleration((int) streckeZuRad(Math.abs(beschleunigung)));
 
 		return this;
 	}
@@ -187,7 +172,7 @@ public class FahrMotor extends NXTRegulatedMotor {
 			geschwindigkeit = getMaximaleGeschwindigkeit();
 		}
 
-		setSpeed((float) streckeZuRad(geschwindigkeit));
+		motor.setSpeed((float) streckeZuRad(geschwindigkeit));
 
 		return this;
 	}

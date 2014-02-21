@@ -23,7 +23,7 @@ public class MotorenMessen extends Programm {
 	public void run() {
 		for (FahrMotor motor : motoren) {
 			try {
-				motor.resetTachoCount();
+				motor.getMotor().resetTachoCount();
 			} catch (Exception e) {
 			} finally {
 				motor.motorFrei();
@@ -35,7 +35,7 @@ public class MotorenMessen extends Programm {
 		while (!Button.ENTER.isDown() || enterDown) {
 			for (int i = 0; i < motoren.length; i++) {
 				LCD.drawString(Double.toString(motoren[i]
-						.radZuStrecke(motoren[i].getTachoCount())), 0, i);
+						.radZuStrecke(motoren[i].getMotor().getTachoCount())), 0, i);
 			}
 
 			if (enterDown)

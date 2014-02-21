@@ -24,8 +24,8 @@ public class ProgrammThread extends Thread {
 		try {
 			programm.run();
 
-			while (FahrMotor.A.isMoving() || FahrMotor.B.isMoving()
-					|| FahrMotor.C.isMoving()) {
+			while (FahrMotor.A.getMotor().isMoving() || FahrMotor.B.getMotor().isMoving()
+					|| FahrMotor.C.getMotor().isMoving()) {
 				Timing.warte(100);
 			}
 		} catch (final ProgrammEnde ende) {
