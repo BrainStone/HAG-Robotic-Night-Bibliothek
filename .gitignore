@@ -5,12 +5,12 @@
 *.war
 *.ear
 
-bin/*
-/bin
+bin/
 
-
-.settings/*
-.metadata/*
+.settings/
+.metadata/
 .classpath
-.gitconfig
 .project
+
+*.nxd
+*.nxj
