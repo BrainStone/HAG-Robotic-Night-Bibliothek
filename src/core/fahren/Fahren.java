@@ -151,7 +151,7 @@ public class Fahren {
 		LINKS.fahre(-strecke);
 
 		if (warte) {
-			while (RECHTS.motor.isMoving() || LINKS.motor.isMoving()) {
+			while (RECHTS.bewegtSich() || LINKS.bewegtSich()) {
 				Timing.warte(1);
 			}
 		}
@@ -182,7 +182,7 @@ public class Fahren {
 		LINKS.fahre(distanz);
 
 		if (warte) {
-			while (RECHTS.motor.isMoving() || LINKS.motor.isMoving()) {
+			while (RECHTS.bewegtSich() || LINKS.bewegtSich()) {
 				Timing.warte(1);
 			}
 		}

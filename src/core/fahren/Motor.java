@@ -30,6 +30,19 @@ public class Motor {
 		this.port = port;
 	}
 
+	/**
+	 * Gibt true zurück, wenn sich der Motor bewegt.<br>
+	 * Es wird geprüft, ob der Motor versucht sich zu bewegen und ob er nicht
+	 * blockiert ist.
+	 * 
+	 * @return true, wenn sich der Motor bewegt, sonst false.
+	 * @see lejos.nxt.NXTRegulatedMotor#isMoving()
+	 * @see lejos.nxt.NXTRegulatedMotor#isStalled()
+	 */
+	public boolean bewegtSich() {
+		return motor.isMoving() && !motor.isStalled();
+	}
+
 	// DOCME
 	public NXTRegulatedMotor getMotor() {
 		return motor;
@@ -41,30 +54,30 @@ public class Motor {
 	}
 
 	/**
-	 * @see lejos.nxt.NXTRegulatedMotor#getPosition()
-	 */
-	public int getPosition() {
-		return motor.getPosition();
-	}
-
-	/**
-	 * @see lejos.nxt.NXTRegulatedMotor#getTachoCount()
-	 */
-	public int getTachoCount() {
-		return motor.getTachoCount();
-	}
-
-	/**
 	 * Entsperrt den Motor. Danach kann man ihn frei drehen.
+	 * 
+	 * @see lejos.nxt.NXTRegulatedMotor#suspendRegulation()
 	 */
 	public void motorFrei() {
 		motor.flt();
 	}
 
 	/**
-	 * @see lejos.nxt.NXTRegulatedMotor#suspendRegulation()
+	 * Gibt den Zählstand des Motors in Grad zurück.
+	 * 
+	 * @return Zählstand in Grad
+	 * @see lejos.nxt.NXTRegulatedMotor#getTachoCount()
 	 */
-	public boolean suspendRegulation() {
-		return motor.suspendRegulation();
+	public int zählstand() {
+		return motor.getTachoCount();
+	}
+
+	/**
+	 * Setzt den Zählstand des Motors auf 0.
+	 * 
+	 * @see lejos.nxt.NXTRegulatedMotor#resetTachoCount()
+	 */
+	public void zählstandZurücksetzten() {
+		motor.resetTachoCount();
 	}
 }

@@ -79,7 +79,7 @@ public class FahrMotor extends Motor {
 			throw new IllegalStateException(
 					"Der Durchmesser und Umfang hat keinen gültigen Wert.");
 
-		motor.rotate((int) (streckeZuRad(distanz) * richtung), !warte);
+		motor.rotate((int) (streckeZuGrad(distanz) * richtung), !warte);
 	}
 
 	/**
@@ -99,18 +99,18 @@ public class FahrMotor extends Motor {
 	 * @return Die momentan maximal mögliche Geschwindigkeit in cm/s.
 	 */
 	public double getMaximaleGeschwindigkeit() {
-		return radZuStrecke(motor.getMaxSpeed());
+		return gradZuStrecke(motor.getMaxSpeed());
 	}
 
 	/**
-	 * Rechnet Radianten in eine Strecke um.
+	 * Rechnet Grad in eine Strecke um.
 	 * 
 	 * @param rad
-	 *            Die umzuwandelnde Rotation in Rad
+	 *            Die umzuwandelnde Rotation in Grad
 	 * @return Stecke in cm
 	 */
-	public double radZuStrecke(double rad) {
-		return (Math.toRadians(rad) / 2) * durchmesser;
+	public double gradZuStrecke(double grad) {
+		return (Math.toRadians(grad) / 2) * durchmesser;
 	}
 
 	/**
@@ -124,7 +124,7 @@ public class FahrMotor extends Motor {
 	 *         ermöglichen.
 	 */
 	public FahrMotor setBeschleunigung(double beschleunigung) {
-		motor.setAcceleration((int) streckeZuRad(Math.abs(beschleunigung)));
+		motor.setAcceleration((int) streckeZuGrad(Math.abs(beschleunigung)));
 
 		return this;
 	}
@@ -172,19 +172,29 @@ public class FahrMotor extends Motor {
 			geschwindigkeit = getMaximaleGeschwindigkeit();
 		}
 
-		motor.setSpeed((float) streckeZuRad(geschwindigkeit));
+		motor.setSpeed((float) streckeZuGrad(geschwindigkeit));
 
 		return this;
 	}
 
 	/**
-	 * Rechnet eine Strecke in Radianten um.
+	 * Rechnet eine Strecke in Grad um.
 	 * 
 	 * @param strecke
 	 *            Die umzuwandelnnde Strecke in cm
-	 * @return Rotation in Rad
+	 * @return Rotation in Grad
 	 */
-	public double streckeZuRad(double strecke) {
+	public double streckeZuGrad(double strecke) {
 		return Math.toDegrees(strecke / (durchmesser / 2.0));
+	}
+
+	/**
+	 * Gibt den Zählstand des Motors in cm zurück.
+	 * 
+	 * @return Zählstand in cm
+	 * @see lejos.nxt.NXTRegulatedMotor#getTachoCount()
+	 */
+	public double zählstandStrecke() {
+		return gradZuStrecke(motor.getTachoCount());
 	}
 }
