@@ -21,10 +21,10 @@ public class MotorenMessen extends Programm {
 
 	@Override
 	public void run() {
-		for (FahrMotor motor : motoren) {
+		for (final FahrMotor motor : motoren) {
 			try {
-				motor.resetTachoCount();
-			} catch (Exception e) {
+				motor.zählstandZurücksetzten();
+			} catch (final Exception e) {
 			} finally {
 				motor.motorFrei();
 			}
@@ -34,12 +34,13 @@ public class MotorenMessen extends Programm {
 
 		while (!Button.ENTER.isDown() || enterDown) {
 			for (int i = 0; i < motoren.length; i++) {
-				LCD.drawString(Double.toString(motoren[i]
-						.radZuStrecke(motoren[i].getTachoCount())), 0, i);
+				LCD.drawString(Double.toString(motoren[i].zählstandStrecke()),
+						0, i);
 			}
 
-			if (enterDown)
+			if (enterDown) {
 				enterDown = Button.ENTER.isDown();
+			}
 
 			Sonstiges.überprüfeProgrammStatus();
 		}

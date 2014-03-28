@@ -1,22 +1,21 @@
 package core.fahren;
 
 import lejos.nxt.MotorPort;
-import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.TachoMotorPort;
 
-public class FahrMotor extends NXTRegulatedMotor {
+public class FahrMotor extends Motor {
 	public static final FahrMotor A = new FahrMotor(MotorPort.A);
 	public static final FahrMotor B = new FahrMotor(MotorPort.B);
 	public static final FahrMotor C = new FahrMotor(MotorPort.C);
-	
+
 	// DOCME
 	public static FahrMotor A(double durchmesser) {
 		A.durchmesser = durchmesser;
 		A.richtung = 1;
-		
+
 		A.setBeschleunigung(50);
 		A.setGeschwindigkeit(10);
-		
+
 		return A;
 	}
 
@@ -24,10 +23,10 @@ public class FahrMotor extends NXTRegulatedMotor {
 	public static FahrMotor B(double durchmesser) {
 		B.durchmesser = durchmesser;
 		B.richtung = 1;
-		
+
 		B.setBeschleunigung(50);
 		B.setGeschwindigkeit(10);
-		
+
 		return B;
 	}
 
@@ -35,10 +34,10 @@ public class FahrMotor extends NXTRegulatedMotor {
 	public static FahrMotor C(double durchmesser) {
 		C.durchmesser = durchmesser;
 		C.richtung = 1;
-		
+
 		C.setBeschleunigung(50);
 		C.setGeschwindigkeit(10);
-		
+
 		return C;
 	}
 
@@ -47,17 +46,10 @@ public class FahrMotor extends NXTRegulatedMotor {
 	/** Die Richtung der Bewegung */
 	private byte richtung;
 
-	/**
-	 * Privater Konstruktor. Wird nur intern verwendet. Er setzt den durchmesser
-	 * auf -1, d.h. man kann ihn verändern.
-	 * 
-	 * @param port
-	 *            Der Port des Motors ({@link MotorPort#A}, {@link MotorPort#B}
-	 *            oder {@link MotorPort#C}).
-	 */
-	private FahrMotor(TachoMotorPort port) {
+	// DOCME
+	public FahrMotor(TachoMotorPort port) {
 		super(port);
-		
+
 		durchmesser = -1.0;
 		richtung = 1;
 	}
@@ -87,7 +79,7 @@ public class FahrMotor extends NXTRegulatedMotor {
 			throw new IllegalStateException(
 					"Der Durchmesser und Umfang hat keinen gültigen Wert.");
 
-		rotate((int) (streckeZuRad(distanz) * richtung), !warte);
+		motor.rotate((int) (streckeZuGrad(distanz) * richtung), !warte);
 	}
 
 	/**
@@ -107,25 +99,18 @@ public class FahrMotor extends NXTRegulatedMotor {
 	 * @return Die momentan maximal mögliche Geschwindigkeit in cm/s.
 	 */
 	public double getMaximaleGeschwindigkeit() {
-		return radZuStrecke(getMaxSpeed());
+		return gradZuStrecke(motor.getMaxSpeed());
 	}
 
 	/**
-	 * Entsperrt den Motor. Danach kann man ihn frei drehen.
-	 */
-	public void motorFrei() {
-		flt();
-	}
-
-	/**
-	 * Rechnet Radianten in eine Strecke um.
+	 * Rechnet Grad in eine Strecke um.
 	 * 
 	 * @param rad
-	 *            Die umzuwandelnde Rotation in Rad
+	 *            Die umzuwandelnde Rotation in Grad
 	 * @return Stecke in cm
 	 */
-	public double radZuStrecke(double rad) {
-		return (Math.toRadians(rad) / 2) * durchmesser;
+	public double gradZuStrecke(double grad) {
+		return (Math.toRadians(grad) / 2) * durchmesser;
 	}
 
 	/**
@@ -139,7 +124,7 @@ public class FahrMotor extends NXTRegulatedMotor {
 	 *         ermöglichen.
 	 */
 	public FahrMotor setBeschleunigung(double beschleunigung) {
-		setAcceleration((int) streckeZuRad(Math.abs(beschleunigung)));
+		motor.setAcceleration((int) streckeZuGrad(Math.abs(beschleunigung)));
 
 		return this;
 	}
@@ -187,19 +172,29 @@ public class FahrMotor extends NXTRegulatedMotor {
 			geschwindigkeit = getMaximaleGeschwindigkeit();
 		}
 
-		setSpeed((float) streckeZuRad(geschwindigkeit));
+		motor.setSpeed((float) streckeZuGrad(geschwindigkeit));
 
 		return this;
 	}
 
 	/**
-	 * Rechnet eine Strecke in Radianten um.
+	 * Rechnet eine Strecke in Grad um.
 	 * 
 	 * @param strecke
 	 *            Die umzuwandelnnde Strecke in cm
-	 * @return Rotation in Rad
+	 * @return Rotation in Grad
 	 */
-	public double streckeZuRad(double strecke) {
+	public double streckeZuGrad(double strecke) {
 		return Math.toDegrees(strecke / (durchmesser / 2.0));
+	}
+
+	/**
+	 * Gibt den Zählstand des Motors in cm zurück.
+	 * 
+	 * @return Zählstand in cm
+	 * @see lejos.nxt.NXTRegulatedMotor#getTachoCount()
+	 */
+	public double zählstandStrecke() {
+		return gradZuStrecke(motor.getTachoCount());
 	}
 }

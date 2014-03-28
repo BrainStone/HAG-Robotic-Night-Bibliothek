@@ -24,8 +24,8 @@ public class ProgrammThread extends Thread {
 		try {
 			programm.run();
 
-			while (FahrMotor.A.isMoving() || FahrMotor.B.isMoving()
-					|| FahrMotor.C.isMoving()) {
+			while (FahrMotor.A.bewegtSich() || FahrMotor.B.bewegtSich()
+					|| FahrMotor.C.bewegtSich()) {
 				Timing.warte(100);
 			}
 		} catch (final ProgrammEnde ende) {
@@ -33,10 +33,10 @@ public class ProgrammThread extends Thread {
 		} catch (final Exception e) {
 			// Verhindere, dass das Programm komplett abstürzt!
 			e.printStackTrace();
-			
+
 			ButtonHelfer.warteAufEnter();
 		}
-		
+
 		FahrMotor.A.motorFrei();
 		FahrMotor.B.motorFrei();
 		FahrMotor.C.motorFrei();
