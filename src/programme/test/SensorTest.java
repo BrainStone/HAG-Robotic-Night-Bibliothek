@@ -3,6 +3,7 @@ package programme.test;
 import lejos.nxt.Button;
 import lejos.nxt.ColorSensor.Color;
 import lejos.nxt.SensorPort;
+import lejos.nxt.Sound;
 import core.sensor.ISensorHandler;
 import core.sensor.SensorHandler;
 import core.template.programm.Programm;
@@ -19,14 +20,15 @@ public class SensorTest extends Programm implements ISensorHandler {
 		SensorHandler sh = new SensorHandler(this);
 		Button.waitForAnyPress();
 		while (Button.ESCAPE.isUp()) {
-			Button.waitForAnyPress();
+			//Button.waitForAnyPress();
 			sh.update();
 		}
 	}
 
 	@Override
 	public void druck(SensorPort s) {
-
+		Sound.beep();
+		System.out.println("druck");
 	}
 
 	@Override
@@ -57,7 +59,9 @@ public class SensorTest extends Programm implements ISensorHandler {
 
 	@Override
 	public SensorPort[] getDefaultDruckSensorPort() {
-		return null;
+		SensorPort[] result = { SensorPort.S1 };
+		return result;
+		//return null;
 	}
 
 	@Override

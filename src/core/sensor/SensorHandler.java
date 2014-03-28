@@ -164,11 +164,11 @@ public class SensorHandler {
 		}
 		for (UltrasonicSensor s : ultraschallSensor) {
 			int i = s.getDistance();
-			if (i > 255) {
+			//if (i > 255) {
 				isensorhandler
 						.ultraschall(ultraschallSensorPort
 								.get(ultraschallSensor.indexOf(s)), i);
-			}
+			//}
 		}
 		
 	}
