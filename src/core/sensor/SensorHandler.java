@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import lejos.nxt.Button;
 import lejos.nxt.ColorSensor;
+import lejos.nxt.LCD;
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.SoundSensor;
@@ -54,7 +55,7 @@ public class SensorHandler {
 		ultraschallSensor = new ArrayList<UltrasonicSensor>();
 		soundSensor = new ArrayList<SoundSensor>();
 		farbSensor = new ArrayList<ColorSensor>();
-		
+
 		for (SensorPort s : lichtSensorPort) {
 			lichtSensor.add(new LightSensor(s));
 		}
@@ -70,6 +71,7 @@ public class SensorHandler {
 		for (SensorPort s : farbSensorPort) {
 			farbSensor.add(new ColorSensor(s));
 		}
+		
 		isensorhandler = i;
 	}
 
@@ -92,27 +94,26 @@ public class SensorHandler {
 	public SensorPort[] getFarbSensorPort() {
 		return (SensorPort[]) farbSensorPort.toArray();
 	}
-	
-	public LightSensor getLightSensor(SensorPort s){
+
+	public LightSensor getLightSensor(SensorPort s) {
 		return lichtSensor.get(lichtSensorPort.indexOf(s));
 	}
-	
-	public UltrasonicSensor getUltraschallSensor(SensorPort s){
+
+	public UltrasonicSensor getUltraschallSensor(SensorPort s) {
 		return ultraschallSensor.get(ultraschallSensorPort.indexOf(s));
 	}
-	
-	public SoundSensor getSoundSensor(SensorPort s){
+
+	public SoundSensor getSoundSensor(SensorPort s) {
 		return soundSensor.get(soundSensorPort.indexOf(s));
 	}
-	
-	public TouchSensor getDruckSensor(SensorPort s){
+
+	public TouchSensor getDruckSensor(SensorPort s) {
 		return druckSensor.get(druckSensorPort.indexOf(s));
 	}
-	
-	public ColorSensor getFarbSensor(SensorPort s){
+
+	public ColorSensor getFarbSensor(SensorPort s) {
 		return farbSensor.get(farbSensorPort.indexOf(s));
 	}
-	
 
 	@SuppressWarnings("deprecation")
 	public void setLichtSensorPort(SensorPort... s) {
@@ -173,22 +174,45 @@ public class SensorHandler {
 		
 	}
 
-	public void kalibrireLicht(SensorPort s) {
-		System.out.println("Das helle Licht");
+	public void kalibrireLicht(SensorPort... sensoren) {
+		LCD.clear();
+		LCD.drawString("Heller", 0, 0);
+		LCD.drawString("Untergrund", 0, 1);
+
 		Button.waitForAnyPress();
-		lichtSensor.get(lichtSensorPort.indexOf(s)).calibrateHigh();
-		System.out.println("Das dunkle Licht");
+
+		for (SensorPort sensor : sensoren) {
+			lichtSensor.get(lichtSensorPort.indexOf(sensor)).calibrateHigh();
+		}
+
+		LCD.clear();
+		LCD.drawString("Dunkler", 0, 0);
+		LCD.drawString("Untergrund", 0, 1);
+
 		Button.waitForAnyPress();
-		lichtSensor.get(lichtSensorPort.indexOf(s)).calibrateLow();
+
+		for (SensorPort sensor : sensoren) {
+			lichtSensor.get(lichtSensorPort.indexOf(sensor)).calibrateLow();
+		}
 	}
 
-	public void kalibrireFarb(SensorPort s) {
-		System.out.println("Die helle Farbe");
-		Button.waitForAnyPress();
-		farbSensor.get(farbSensorPort.indexOf(s)).calibrateHigh();
-		System.out.println("Die dunkle Farbe");
-		Button.waitForAnyPress();
-		farbSensor.get(farbSensorPort.indexOf(s)).calibrateHigh();
-	}
+	public void kalibrireFarb(SensorPort... sensoren) {
+		LCD.clear();
+		LCD.drawString("Weiß", 0, 0);
 
+		Button.waitForAnyPress();
+
+		for (SensorPort sensor : sensoren) {
+			lichtSensor.get(farbSensorPort.indexOf(sensor)).calibrateHigh();
+		}
+
+		LCD.clear();
+		LCD.drawString("Schwarz", 0, 0);
+
+		Button.waitForAnyPress();
+
+		for (SensorPort sensor : sensoren) {
+			lichtSensor.get(farbSensorPort.indexOf(sensor)).calibrateLow();
+		}
+	}
 }
