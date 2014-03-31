@@ -3,6 +3,8 @@ package core.loader;
 import java.util.ArrayList;
 
 import programme.test.FahrTest;
+import programme.test.FahrTest2;
+import programme.test.Linienverfolgung;
 import programme.test.SensorTest;
 import programme.test.TestProgramm;
 import programme.util.MotorenMessen;
@@ -16,7 +18,9 @@ public final class ProgrammLoader {
 	static {
 		// XXX Hier neue Instanzen der Programme erstellen
 
+		new Linienverfolgung();
 		new FahrTest();
+		new FahrTest2();
 		new MotorenMessen(new FahrMotor[] { FahrMotor.A.setDurchmesser(5.5),
 				FahrMotor.B.setDurchmesser(5.5),
 				FahrMotor.C.setDurchmesser(5.5) });

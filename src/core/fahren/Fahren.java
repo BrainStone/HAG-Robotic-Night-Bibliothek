@@ -101,7 +101,7 @@ public class Fahren {
 
 	public final FahrMotor RECHTS, LINKS;
 
-	private final double abstand;
+	protected final double abstand;
 
 	/**
 	 * Initiert das Objekt und die Motoren.
@@ -113,7 +113,7 @@ public class Fahren {
 	 * @param abstand
 	 *            Radabstand in cm
 	 */
-	private Fahren(FahrMotor rechts, FahrMotor links, double abstand) {
+	protected Fahren(FahrMotor rechts, FahrMotor links, double abstand) {
 		RECHTS = rechts;
 		LINKS = links;
 		this.abstand = abstand;

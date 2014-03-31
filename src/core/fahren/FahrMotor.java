@@ -4,6 +4,9 @@ import lejos.nxt.MotorPort;
 import lejos.nxt.TachoMotorPort;
 
 public class FahrMotor extends Motor {
+	public static final double defaultBeschleunigung = 20.0;
+	public static final double defaultGeschwindigkeit = 10.0;
+
 	public static final FahrMotor A = new FahrMotor(MotorPort.A);
 	public static final FahrMotor B = new FahrMotor(MotorPort.B);
 	public static final FahrMotor C = new FahrMotor(MotorPort.C);
@@ -13,8 +16,8 @@ public class FahrMotor extends Motor {
 		A.durchmesser = durchmesser;
 		A.richtung = 1;
 
-		A.setBeschleunigung(50);
-		A.setGeschwindigkeit(10);
+		A.setBeschleunigung(defaultBeschleunigung);
+		A.setGeschwindigkeit(defaultGeschwindigkeit);
 
 		return A;
 	}
@@ -24,8 +27,8 @@ public class FahrMotor extends Motor {
 		B.durchmesser = durchmesser;
 		B.richtung = 1;
 
-		B.setBeschleunigung(50);
-		B.setGeschwindigkeit(10);
+		B.setBeschleunigung(defaultBeschleunigung);
+		B.setGeschwindigkeit(defaultGeschwindigkeit);
 
 		return B;
 	}
@@ -35,8 +38,8 @@ public class FahrMotor extends Motor {
 		C.durchmesser = durchmesser;
 		C.richtung = 1;
 
-		C.setBeschleunigung(50);
-		C.setGeschwindigkeit(10);
+		C.setBeschleunigung(defaultBeschleunigung);
+		C.setGeschwindigkeit(defaultGeschwindigkeit);
 
 		return C;
 	}
@@ -83,6 +86,15 @@ public class FahrMotor extends Motor {
 	}
 
 	/**
+	 * Gibt die Beschleunigung des Motors zurück
+	 * 
+	 * @return Beschleunigung des Motors in cm/s²
+	 */
+	public double getBeschleunigung() {
+		return gradZuStrecke(motor.getAcceleration());
+	}
+
+	/**
 	 * Gibt den Durchmesser zurück.
 	 * 
 	 * @return Diese Funktion gibt nur den angegebenen Durchmesser des Rades in
@@ -91,6 +103,15 @@ public class FahrMotor extends Motor {
 	 */
 	public double getDurchmesser() {
 		return durchmesser;
+	}
+
+	/**
+	 * Gibt die Geschwindigkeit des Motors zurück
+	 * 
+	 * @return Geschwindigkeit des Motors in cm/s
+	 */
+	public double getGeschwindigkeit() {
+		return gradZuStrecke(motor.getSpeed());
 	}
 
 	/**
