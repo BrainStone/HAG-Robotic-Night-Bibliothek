@@ -80,4 +80,37 @@ public class Motor {
 	public void zählstandZurücksetzten() {
 		motor.resetTachoCount();
 	}
+
+	/**
+	 * Testet ob der motor angeschlossen ist (bewegt sich)
+	 * 
+	 * @return angeschlossen?
+	 */
+	public boolean isAngeschlossen() {
+		int tochoold = this.zählstand();
+		this.getMotor().rotate(1);
+		int tochonew = this.zählstand();
+		this.getMotor().rotate(-1);
+		return tochoold != tochonew;
+	}
+
+	/**
+	 * Testet ob der motor angeschlossen ist (bewegt sich)
+	 * 
+	 * @param mp
+	 *            Der Port
+	 * @return angeschlossen?
+	 */
+	public static boolean isAngeschlossen(MotorPort mp) {
+		Motor m = null;
+		if (mp == MotorPort.A) {
+			m = A;
+		} else if (mp == MotorPort.B) {
+			m = B;
+		} else if (mp == MotorPort.C) {
+			m = C;
+		}
+
+		return m.isAngeschlossen();
+	}
 }
