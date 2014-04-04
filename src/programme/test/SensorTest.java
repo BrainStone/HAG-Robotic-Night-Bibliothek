@@ -4,8 +4,8 @@ import lejos.nxt.Button;
 import lejos.nxt.ColorSensor.Color;
 import lejos.nxt.SensorPort;
 import lejos.nxt.Sound;
-import core.sensor.ISensorHandler;
 import core.sensor.SensorHandler;
+import core.sensor.interfaces.ISensorHandler;
 import core.template.programm.Programm;
 
 public class SensorTest extends Programm implements ISensorHandler {

@@ -1,194 +1,194 @@
 package core.sensor;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import lejos.nxt.Button;
 import lejos.nxt.ColorSensor;
+import lejos.nxt.LCD;
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.SoundSensor;
 import lejos.nxt.TouchSensor;
 import lejos.nxt.UltrasonicSensor;
+import core.sensor.interfaces.IDruckSensor;
+import core.sensor.interfaces.IFarbSensor;
+import core.sensor.interfaces.ILichtSensor;
+import core.sensor.interfaces.ISensorHandler;
+import core.sensor.interfaces.ISoundSensor;
+import core.sensor.interfaces.IUltraschallSensor;
 
+@SuppressWarnings("deprecation")
 public class SensorHandler {
+	private HashMap<SensorPort, LightSensor> lichtSensoren;
+	private HashMap<SensorPort, TouchSensor> druckSensoren;
+	private HashMap<SensorPort, UltrasonicSensor> ultraschallSensoren;
+	private HashMap<SensorPort, SoundSensor> soundSensoren;
+	private HashMap<SensorPort, ColorSensor> farbSensoren;
 
-	// TODO : ArrayList
-	private ArrayList<SensorPort> lichtSensorPort = null;
-	private ArrayList<SensorPort> druckSensorPort = null;
-	private ArrayList<SensorPort> ultraschallSensorPort = null;
-	private ArrayList<SensorPort> soundSensorPort = null;
-	private ArrayList<SensorPort> farbSensorPort = null;
+	private ISensorHandler iSensorHandler;
 
-	private ArrayList<LightSensor> lichtSensor = null;
-	private ArrayList<TouchSensor> druckSensor = null;
-	private ArrayList<UltrasonicSensor> ultraschallSensor = null;
-	private ArrayList<SoundSensor> soundSensor = null;
-	private ArrayList<ColorSensor> farbSensor = null;
-
-	private ISensorHandler isensorhandler;
-	
 	/**
 	 * Eine Neue Sensor handler instance
-	 * @param i Ein ISensorHandler
+	 * 
+	 * @param sensorHandler
+	 *            Ein ISensorHandler
 	 */
-	@SuppressWarnings("deprecation")
-	public SensorHandler(ISensorHandler i) {
-		lichtSensorPort = new ArrayList<SensorPort>();
-		druckSensorPort = new ArrayList<SensorPort>();
-		ultraschallSensorPort = new ArrayList<SensorPort>();
-		soundSensorPort = new ArrayList<SensorPort>();
-		farbSensorPort = new ArrayList<SensorPort>();
-		if (i.getDefaultLichtSensorPort() != null)
-			lichtSensorPort.addAll(i.getDefaultLichtSensorPort());
-		if (i.getDefaultDruckSensorPort() != null)
-			druckSensorPort.addAll(i.getDefaultDruckSensorPort());
-		if (i.getDefaultUltraschallSensorPort() != null)
-			ultraschallSensorPort.addAll(i.getDefaultUltraschallSensorPort());
-		if (i.getDefaultSoundSensorPort() != null)
-			soundSensorPort.addAll(i.getDefaultSoundSensorPort());
-		if (i.getDefaultFarbSensorPort() != null)
-			farbSensorPort.addAll(i.getDefaultFarbSensorPort());
-		
-		lichtSensor = new ArrayList<LightSensor>();
-		druckSensor = new ArrayList<TouchSensor>();
-		ultraschallSensor = new ArrayList<UltrasonicSensor>();
-		soundSensor = new ArrayList<SoundSensor>();
-		farbSensor = new ArrayList<ColorSensor>();
-		
-		for (SensorPort s : lichtSensorPort) {
-			lichtSensor.add(new LightSensor(s));
+	public SensorHandler(ISensorHandler sensorHandler) {
+		iSensorHandler = sensorHandler;
+
+		if (iSensorHandler instanceof ILichtSensor) {
+			ILichtSensor iLichtSensor = (ILichtSensor) iSensorHandler;
+
+			for (SensorPort port : iLichtSensor.lichtSensorenPorts()) {
+				lichtSensoren.put(port, new LightSensor(port));
+			}
 		}
-		for (SensorPort s : druckSensorPort) {
-			druckSensor.add(new TouchSensor(s));
+
+		if (iSensorHandler instanceof IDruckSensor) {
+			IDruckSensor iDruckSensor = (IDruckSensor) iSensorHandler;
+
+			for (SensorPort port : iDruckSensor.druckSensorenPorts()) {
+				druckSensoren.put(port, new TouchSensor(port));
+			}
 		}
-		for (SensorPort s : ultraschallSensorPort) {
-			ultraschallSensor.add(new UltrasonicSensor(s));
+
+		if (iSensorHandler instanceof IUltraschallSensor) {
+			IUltraschallSensor iUltraschallSensor = (IUltraschallSensor) iSensorHandler;
+
+			for (SensorPort port : iUltraschallSensor
+					.ultraschallSensorenPorts()) {
+				ultraschallSensoren.put(port, new UltrasonicSensor(port));
+			}
 		}
-		for (SensorPort s : soundSensorPort) {
-			soundSensor.add(new SoundSensor(s));
+
+		if (iSensorHandler instanceof ISoundSensor) {
+			ISoundSensor iSoundSensor = (ISoundSensor) iSensorHandler;
+
+			for (SensorPort port : iSoundSensor.soundSensorenPorts()) {
+				soundSensoren.put(port, new SoundSensor(port));
+			}
 		}
-		for (SensorPort s : farbSensorPort) {
-			farbSensor.add(new ColorSensor(s));
+
+		if (iSensorHandler instanceof IFarbSensor) {
+			IFarbSensor iFarbSensor = (IFarbSensor) iSensorHandler;
+
+			for (SensorPort port : iFarbSensor.farbSensorenPorts()) {
+				farbSensoren.put(port, new ColorSensor(port));
+			}
 		}
-		isensorhandler = i;
 	}
 
-	public SensorPort[] getLichtSensorPort() {
-		return (SensorPort[]) lichtSensorPort.toArray();
+	public SensorPort[] getLichtSensorenPorts() {
+		return (SensorPort[]) lichtSensoren.keySet().toArray();
 	}
 
-	public SensorPort[] getDruckSensorPort() {
-		return (SensorPort[]) druckSensorPort.toArray();
+	public SensorPort[] getDruckSensorenPorts() {
+		return (SensorPort[]) druckSensoren.keySet().toArray();
 	}
 
-	public SensorPort[] getUltraschallSensorPort() {
-		return (SensorPort[]) ultraschallSensorPort.toArray();
+	public SensorPort[] getUltraschallenSensorPorts() {
+		return (SensorPort[]) ultraschallSensoren.keySet().toArray();
 	}
 
-	public SensorPort[] getSoundPort() {
-		return (SensorPort[]) soundSensorPort.toArray();
+	public SensorPort[] getSoundSensorenPorts() {
+		return (SensorPort[]) soundSensoren.keySet().toArray();
 	}
 
-	public SensorPort[] getFarbSensorPort() {
-		return (SensorPort[]) farbSensorPort.toArray();
-	}
-	
-	public LightSensor getLightSensor(SensorPort s){
-		return lichtSensor.get(lichtSensorPort.indexOf(s));
-	}
-	
-	public UltrasonicSensor getUltraschallSensor(SensorPort s){
-		return ultraschallSensor.get(ultraschallSensorPort.indexOf(s));
-	}
-	
-	public SoundSensor getSoundSensor(SensorPort s){
-		return soundSensor.get(soundSensorPort.indexOf(s));
-	}
-	
-	public TouchSensor getDruckSensor(SensorPort s){
-		return druckSensor.get(druckSensorPort.indexOf(s));
-	}
-	
-	public ColorSensor getFarbSensor(SensorPort s){
-		return farbSensor.get(farbSensorPort.indexOf(s));
-	}
-	
-
-	@SuppressWarnings("deprecation")
-	public void setLichtSensorPort(SensorPort... s) {
-		lichtSensorPort = new ArrayList<SensorPort>(s);
-
+	public SensorPort[] getFarbSensorenPorts() {
+		return (SensorPort[]) farbSensoren.keySet().toArray();
 	}
 
-	@SuppressWarnings("deprecation")
-	public void setDruckSensorPort(SensorPort... s) {
-		druckSensorPort = new ArrayList<SensorPort>(s);
+	public LightSensor getLightSensor(SensorPort port) {
+		return lichtSensoren.get(port);
 	}
 
-	@SuppressWarnings("deprecation")
-	public void setUltraschallSensorPort(SensorPort... s) {
-		ultraschallSensorPort = new ArrayList<SensorPort>(s);
+	public UltrasonicSensor getUltraschallSensor(SensorPort port) {
+		return ultraschallSensoren.get(port);
 	}
 
-	@SuppressWarnings("deprecation")
-	public void setSoundSensorPort(SensorPort... s) {
-		soundSensorPort = new ArrayList<SensorPort>(s);
+	public SoundSensor getSoundSensor(SensorPort port) {
+		return soundSensoren.get(port);
 	}
 
-	@SuppressWarnings("deprecation")
-	public void setFarbSensorPort(SensorPort... s) {
-		farbSensorPort = new ArrayList<SensorPort>(s);
+	public TouchSensor getDruckSensor(SensorPort port) {
+		return druckSensoren.get(port);
 	}
-	
+
+	public ColorSensor getFarbSensor(SensorPort port) {
+		return farbSensoren.get(port);
+	}
+
 	/**
 	 * Updated die sensoren
 	 */
 	public void update() {
-		for (LightSensor s : lichtSensor) {
-			isensorhandler.licht(lichtSensorPort.get(lichtSensor.indexOf(s)),
-					s.getLightValue(), s.getFloodlight());
-		}
-		for (TouchSensor s : druckSensor) {
-			if (s.isPressed()) {
-				isensorhandler
-						.druck(druckSensorPort.get(druckSensor.indexOf(s)));
-			}
-		}
-		for (ColorSensor s : farbSensor) {
-			isensorhandler.farbe(farbSensorPort.get(farbSensor.indexOf(s)),
-					s.getColor(), s.getFloodlight());
-		}
-		for (SoundSensor s : soundSensor) {
-			isensorhandler.sound(soundSensorPort.get(soundSensor.indexOf(s)),
-					s.readValue());
-		}
-		for (UltrasonicSensor s : ultraschallSensor) {
-			int i = s.getDistance();
-			//if (i > 255) {
-				isensorhandler
-						.ultraschall(ultraschallSensorPort
-								.get(ultraschallSensor.indexOf(s)), i);
-			//}
-		}
-		
+		// for (LightSensor s : lichtSensor) {
+		// iSensorHandler.licht(lichtSensorPort.get(lichtSensor.indexOf(s)),
+		// s.getLightValue(), s.getFloodlight());
+		// }
+		// for (TouchSensor s : druckSensor) {
+		// if (s.isPressed()) {
+		// iSensorHandler
+		// .druck(druckSensorPort.get(druckSensor.indexOf(s)));
+		// }
+		// }
+		// for (ColorSensor s : farbSensor) {
+		// iSensorHandler.farbe(farbSensorPort.get(farbSensor.indexOf(s)),
+		// s.getColor(), s.getFloodlight());
+		// }
+		// for (SoundSensor s : soundSensor) {
+		// iSensorHandler.sound(soundSensorPort.get(soundSensor.indexOf(s)),
+		// s.readValue());
+		// }
+		// for (UltrasonicSensor s : ultraschallSensor) {
+		// int i = s.getDistance();
+		// //if (i > 255) {
+		// iSensorHandler
+		// .ultraschall(ultraschallSensorPort
+		// .get(ultraschallSensor.indexOf(s)), i);
+		// //}
+		// }
 	}
 
-	public void kalibrireLicht(SensorPort s) {
-		System.out.println("Das helle Licht");
+	public void kalibrireLicht(SensorPort... ports) {
+		LCD.clear();
+		LCD.drawString("Heller", 0, 0);
+		LCD.drawString("Untergrund", 0, 1);
+
 		Button.waitForAnyPress();
-		lichtSensor.get(lichtSensorPort.indexOf(s)).calibrateHigh();
-		System.out.println("Das dunkle Licht");
+
+		for (SensorPort port : ports) {
+			lichtSensoren.get(port).calibrateHigh();
+		}
+
+		LCD.clear();
+		LCD.drawString("Dunkler", 0, 0);
+		LCD.drawString("Untergrund", 0, 1);
+
 		Button.waitForAnyPress();
-		lichtSensor.get(lichtSensorPort.indexOf(s)).calibrateLow();
+
+		for (SensorPort port : ports) {
+			lichtSensoren.get(port).calibrateLow();
+		}
 	}
 
-	public void kalibrireFarb(SensorPort s) {
-		System.out.println("Die helle Farbe");
-		Button.waitForAnyPress();
-		farbSensor.get(farbSensorPort.indexOf(s)).calibrateHigh();
-		System.out.println("Die dunkle Farbe");
-		Button.waitForAnyPress();
-		farbSensor.get(farbSensorPort.indexOf(s)).calibrateHigh();
-	}
+	public void kalibrireFarb(SensorPort... ports) {
+		LCD.clear();
+		LCD.drawString("Weiß", 0, 0);
 
+		Button.waitForAnyPress();
+
+		for (SensorPort port : ports) {
+			farbSensoren.get(port).calibrateHigh();
+		}
+
+		LCD.clear();
+		LCD.drawString("Schwarz", 0, 0);
+
+		Button.waitForAnyPress();
+
+		for (SensorPort port : ports) {
+			farbSensoren.get(port).calibrateLow();
+		}
+	}
 }
