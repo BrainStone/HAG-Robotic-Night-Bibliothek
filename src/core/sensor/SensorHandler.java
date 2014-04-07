@@ -1,6 +1,7 @@
 package core.sensor;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import lejos.nxt.Button;
 import lejos.nxt.ColorSensor;
@@ -11,11 +12,16 @@ import lejos.nxt.SoundSensor;
 import lejos.nxt.TouchSensor;
 import lejos.nxt.UltrasonicSensor;
 import core.sensor.interfaces.IDruckSensor;
+import core.sensor.interfaces.IDruckSensorUpdate;
 import core.sensor.interfaces.IFarbSensor;
+import core.sensor.interfaces.IFarbSensorUpdate;
 import core.sensor.interfaces.ILichtSensor;
+import core.sensor.interfaces.ILichtSensorUpdate;
 import core.sensor.interfaces.ISensorHandler;
 import core.sensor.interfaces.ISoundSensor;
+import core.sensor.interfaces.ISoundSensorUpdate;
 import core.sensor.interfaces.IUltraschallSensor;
+import core.sensor.interfaces.IUltraschallSensorUpdate;
 
 @SuppressWarnings("deprecation")
 public class SensorHandler {
@@ -24,6 +30,12 @@ public class SensorHandler {
 	private HashMap<SensorPort, UltrasonicSensor> ultraschallSensoren;
 	private HashMap<SensorPort, SoundSensor> soundSensoren;
 	private HashMap<SensorPort, ColorSensor> farbSensoren;
+
+	private boolean updateLichtSensoren;
+	private boolean updateDruckSensoren;
+	private boolean updateUltraschallSensoren;
+	private boolean updateSoundSensoren;
+	private boolean updateFarbSensoren;
 
 	private ISensorHandler iSensorHandler;
 
@@ -37,44 +49,59 @@ public class SensorHandler {
 		iSensorHandler = sensorHandler;
 
 		if (iSensorHandler instanceof ILichtSensor) {
+			lichtSensoren = new HashMap<SensorPort, LightSensor>();
 			ILichtSensor iLichtSensor = (ILichtSensor) iSensorHandler;
 
 			for (SensorPort port : iLichtSensor.lichtSensorenPorts()) {
 				lichtSensoren.put(port, new LightSensor(port));
 			}
+
+			updateLichtSensoren = iLichtSensor instanceof ILichtSensorUpdate;
 		}
 
 		if (iSensorHandler instanceof IDruckSensor) {
+			druckSensoren = new HashMap<SensorPort, TouchSensor>();
 			IDruckSensor iDruckSensor = (IDruckSensor) iSensorHandler;
 
 			for (SensorPort port : iDruckSensor.druckSensorenPorts()) {
 				druckSensoren.put(port, new TouchSensor(port));
 			}
+
+			updateDruckSensoren = iDruckSensor instanceof IDruckSensorUpdate;
 		}
 
 		if (iSensorHandler instanceof IUltraschallSensor) {
+			ultraschallSensoren = new HashMap<SensorPort, UltrasonicSensor>();
 			IUltraschallSensor iUltraschallSensor = (IUltraschallSensor) iSensorHandler;
 
 			for (SensorPort port : iUltraschallSensor
 					.ultraschallSensorenPorts()) {
 				ultraschallSensoren.put(port, new UltrasonicSensor(port));
 			}
+
+			updateUltraschallSensoren = iUltraschallSensor instanceof IUltraschallSensorUpdate;
 		}
 
 		if (iSensorHandler instanceof ISoundSensor) {
+			soundSensoren = new HashMap<SensorPort, SoundSensor>();
 			ISoundSensor iSoundSensor = (ISoundSensor) iSensorHandler;
 
 			for (SensorPort port : iSoundSensor.soundSensorenPorts()) {
 				soundSensoren.put(port, new SoundSensor(port));
 			}
+
+			updateSoundSensoren = iSoundSensor instanceof ISoundSensorUpdate;
 		}
 
 		if (iSensorHandler instanceof IFarbSensor) {
+			farbSensoren = new HashMap<SensorPort, ColorSensor>();
 			IFarbSensor iFarbSensor = (IFarbSensor) iSensorHandler;
 
 			for (SensorPort port : iFarbSensor.farbSensorenPorts()) {
 				farbSensoren.put(port, new ColorSensor(port));
 			}
+
+			updateFarbSensoren = iFarbSensor instanceof IFarbSensorUpdate;
 		}
 	}
 
@@ -119,35 +146,75 @@ public class SensorHandler {
 	}
 
 	/**
-	 * Updated die sensoren
+	 * Updated die Sensoren
 	 */
 	public void update() {
-		// for (LightSensor s : lichtSensor) {
-		// iSensorHandler.licht(lichtSensorPort.get(lichtSensor.indexOf(s)),
-		// s.getLightValue(), s.getFloodlight());
-		// }
-		// for (TouchSensor s : druckSensor) {
-		// if (s.isPressed()) {
-		// iSensorHandler
-		// .druck(druckSensorPort.get(druckSensor.indexOf(s)));
-		// }
-		// }
-		// for (ColorSensor s : farbSensor) {
-		// iSensorHandler.farbe(farbSensorPort.get(farbSensor.indexOf(s)),
-		// s.getColor(), s.getFloodlight());
-		// }
-		// for (SoundSensor s : soundSensor) {
-		// iSensorHandler.sound(soundSensorPort.get(soundSensor.indexOf(s)),
-		// s.readValue());
-		// }
-		// for (UltrasonicSensor s : ultraschallSensor) {
-		// int i = s.getDistance();
-		// //if (i > 255) {
-		// iSensorHandler
-		// .ultraschall(ultraschallSensorPort
-		// .get(ultraschallSensor.indexOf(s)), i);
-		// //}
-		// }
+		SensorPort port;
+		LightSensor lichtSensor;
+		TouchSensor druckSensor;
+		UltrasonicSensor ultraschallSensor;
+		SoundSensor soundSensor;
+		ColorSensor farbSensor;
+
+		if (updateLichtSensoren) {
+			for (Entry<SensorPort, LightSensor> sensor : lichtSensoren
+					.entrySet()) {
+				port = sensor.getKey();
+				lichtSensor = sensor.getValue();
+
+				((ILichtSensorUpdate) iSensorHandler).handleLichtSensorUpdate(
+						port, lichtSensor, lichtSensor.getLightValue(),
+						lichtSensor.getFloodlight() != 0);
+			}
+		}
+
+		if (updateDruckSensoren) {
+			for (Entry<SensorPort, TouchSensor> sensor : druckSensoren
+					.entrySet()) {
+				port = sensor.getKey();
+				druckSensor = sensor.getValue();
+
+				if (druckSensor.isPressed()) {
+					((IDruckSensorUpdate) iSensorHandler)
+							.handleDruckSensorUpdate(port, druckSensor);
+				}
+			}
+		}
+
+		if (updateUltraschallSensoren) {
+			for (Entry<SensorPort, UltrasonicSensor> sensor : ultraschallSensoren
+					.entrySet()) {
+				port = sensor.getKey();
+				ultraschallSensor = sensor.getValue();
+
+				((IUltraschallSensorUpdate) iSensorHandler)
+						.handleUltraschallSensorUpdate(port, ultraschallSensor,
+								ultraschallSensor.getDistance());
+			}
+		}
+
+		if (updateSoundSensoren) {
+			for (Entry<SensorPort, SoundSensor> sensor : soundSensoren
+					.entrySet()) {
+				port = sensor.getKey();
+				soundSensor = sensor.getValue();
+
+				((ISoundSensorUpdate) iSensorHandler).handleSoundSensorUpdate(
+						port, soundSensor, soundSensor.readValue());
+			}
+		}
+
+		if (updateFarbSensoren) {
+			for (Entry<SensorPort, ColorSensor> sensor : farbSensoren
+					.entrySet()) {
+				port = sensor.getKey();
+				farbSensor = sensor.getValue();
+
+				((IFarbSensorUpdate) iSensorHandler).handleFarbSensorUpdate(
+						port, farbSensor, farbSensor.getColor(),
+						farbSensor.getFloodlight());
+			}
+		}
 	}
 
 	public void kalibrireLicht(SensorPort... ports) {
