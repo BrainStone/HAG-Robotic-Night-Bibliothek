@@ -33,10 +33,10 @@ public class ProgrammThread extends Thread {
 		} catch (final Exception e) {
 			// Verhindere, dass das Programm komplett abstürzt!
 			e.printStackTrace();
-			
+
 			ButtonHelfer.warteAufEnter();
 		}
-		
+
 		FahrMotor.A.motorFrei();
 		FahrMotor.B.motorFrei();
 		FahrMotor.C.motorFrei();

@@ -14,26 +14,6 @@ public class SensorTest extends Programm implements IUltraschallSensorUpdate,
 		IDruckSensorUpdate {
 
 	@Override
-	public String name() {
-		return "SensorTest";
-	}
-
-	@Override
-	public void run() {
-		SensorHandler sh = new SensorHandler(this);
-		Button.waitForAnyPress();
-		while (Button.ESCAPE.isUp()) {
-			// Button.waitForAnyPress();1
-			sh.update();
-		}
-	}
-
-	@Override
-	public SensorPort[] ultraschallSensorenPorts() {
-		return new SensorPort[] { SensorPort.S4 };
-	}
-
-	@Override
 	public SensorPort[] druckSensorenPorts() {
 		return new SensorPort[] { SensorPort.S1 };
 	}
@@ -48,5 +28,25 @@ public class SensorTest extends Programm implements IUltraschallSensorUpdate,
 	public void handleUltraschallSensorUpdate(SensorPort port,
 			UltrasonicSensor ultraschallSensor, double abstand) {
 		System.out.println(abstand);
+	}
+
+	@Override
+	public String name() {
+		return "SensorTest";
+	}
+
+	@Override
+	public void run() {
+		final SensorHandler sh = new SensorHandler(this);
+		Button.waitForAnyPress();
+		while (Button.ESCAPE.isUp()) {
+			// Button.waitForAnyPress();1
+			sh.update();
+		}
+	}
+
+	@Override
+	public SensorPort[] ultraschallSensorenPorts() {
+		return new SensorPort[] { SensorPort.S4 };
 	}
 }
