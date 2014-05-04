@@ -7,6 +7,7 @@ import programme.test.FahrTest2;
 import programme.test.Linienverfolgung;
 import programme.test.SensorTest;
 import programme.test.TestProgramm;
+import programme.test.VariablenTest;
 import programme.util.MotorenMessen;
 import core.fahren.FahrMotor;
 import core.template.programm.Programm;
@@ -26,5 +27,6 @@ public final class ProgrammLoader {
 				FahrMotor.C.setDurchmesser(5.5) });
 		new TestProgramm();
 		new SensorTest();
+		new VariablenTest();
 	}
 }
