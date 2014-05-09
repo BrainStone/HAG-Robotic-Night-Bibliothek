@@ -2,20 +2,20 @@ package core.variablen.handler;
 
 import core.variablen.VariableHandler;
 
-public class StringVariableHandler extends VariableHandler<String>{
+public class StringVariableHandler extends VariableHandler{
 
-	@Override
-	public String save(String obj) {
-		return obj;
+	public StringVariableHandler() {
+		super(String.class);
 	}
 
 	@Override
-	public String read(String t) {
+	protected String internSave(Object obj) {
+		return (String) obj;
+	}
+
+	@Override
+	protected String internRead(String t) {
 		return t;
 	}
 	
-	@Override
-	public String name() {
-		return STRING_VARIABLE_HANDLER_NAME;
-	}
 }

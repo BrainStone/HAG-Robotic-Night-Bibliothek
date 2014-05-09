@@ -1,30 +1,49 @@
 package core.variablen;
 
-public abstract class VariableHandler<T> {
+import core.variablen.handler.FloatVariableHandler;
+import core.variablen.handler.IntegerVariableHandler;
+import core.variablen.handler.StringVariableHandler;
+
+public abstract class VariableHandler {
+
+	public static final VariableHandler INTEGER = new IntegerVariableHandler();
+	public static final VariableHandler FLOAT = new FloatVariableHandler();
+	public static final VariableHandler STRING = new StringVariableHandler();
 	
-	public static final String INTEGER_VARIABLE_HANDLER_NAME = "int";
-	public static final String FLOAT_VARIABLE_HANDLER_NAME = "float";
-	public static final String STRING_VARIABLE_HANDLER_NAME = "str";
 	
-	public VariableHandler() {
-		VariableHandlerRegistry.add(this);
+	protected final Class<?> type;
+
+	public VariableHandler(Class<?> type) {
+		this.type = type;
 	}
-	
+
 	/**
 	 * Das Objekt als string
-	 * @param obj Das Objekt
-	 * @return 
+	 * 
+	 * @param value
+	 *            Das Objekt
+	 * @return
 	 */
-	public abstract String save(T obj);
+	public final String save(Object value) {
+		if (type.isInstance(value)) {
+			return internSave(value);
+		}
+		return null;
+	}
+
+	protected abstract String internSave(Object value);
+
 	/**
 	 * Das Objekt
-	 * @param t Der String
+	 * 
+	 * @param t
+	 *            Der String
 	 * @return
 	 */
-	public abstract T read(String t);
-	/**
-	 * Der name Des VariableHandlers
-	 * @return
-	 */
-	public abstract String name();
+	public final Object read(String t) {
+		return internRead(t);
+	}
+	
+	protected abstract Object internRead(String t);
+
 }

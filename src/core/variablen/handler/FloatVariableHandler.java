@@ -2,21 +2,20 @@ package core.variablen.handler;
 
 import core.variablen.VariableHandler;
 
-public class FloatVariableHandler extends VariableHandler<Float> {
+public class FloatVariableHandler extends VariableHandler {
+
+	public FloatVariableHandler() {
+		super(Float.class);
+	}
 
 	@Override
-	public String save(Float obj) {
+	protected String internSave(Object obj) {
 		return obj.toString();
 	}
 
 	@Override
-	public Float read(String t) {
+	public Object internRead(String t) {
 		return Float.parseFloat(t);
-	}
-
-	@Override
-	public String name() {
-		return FLOAT_VARIABLE_HANDLER_NAME;
 	}
 
 }

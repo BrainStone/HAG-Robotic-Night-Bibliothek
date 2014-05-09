@@ -2,21 +2,19 @@ package core.variablen.handler;
 
 import core.variablen.VariableHandler;
 
-public class IntegerVariableHandler extends VariableHandler<Integer> {
+public class IntegerVariableHandler extends VariableHandler {
+
+	public IntegerVariableHandler() {
+		super(Integer.class);
+	}
 
 	@Override
-	public String save(Integer obj) {
+	protected String internSave(Object obj) {
 		return obj.toString();
 	}
 
 	@Override
-	public Integer read(String t) {
+	protected Integer internRead(String t) {
 		return Integer.parseInt(t);
 	}
-	
-	@Override
-	public String name() {
-		return INTEGER_VARIABLE_HANDLER_NAME;
-	}
-
 }
