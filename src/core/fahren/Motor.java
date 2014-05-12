@@ -20,6 +20,43 @@ public class Motor {
 	public static final Motor B = new Motor(MotorPort.B);
 	public static final Motor C = new Motor(MotorPort.C);
 
+	/**
+	 * Testet, ob der Motor angeschlossen ist.<br>
+	 * Der Motor wird sich kurz bewegen und alle Bewegungen abbrechen. Außerdem
+	 * ist er dann frei beweglich.
+	 * 
+	 * @param mp
+	 *            Der Port
+	 * @return angeschlossen?
+	 * @see Motor#isAngeschlossen(MotorPort, boolean)
+	 */
+	public static boolean isAngeschlossen(MotorPort mp) {
+		return isAngeschlossen(mp, true);
+	}
+
+	/**
+	 * Testet, ob der Motor angeschlossen ist.<br>
+	 * Der Motor wird sich kurz bewegen und alle Bewegungen abbrechen.
+	 * 
+	 * @param mp
+	 *            Der Port
+	 * @param entsperreMotor
+	 *            Soll der Motor nach dem Test entsperrt werden?
+	 * @return angeschlossen?
+	 */
+	public static boolean isAngeschlossen(MotorPort mp, boolean entsperreMotor) {
+		Motor m = null;
+		if (mp == MotorPort.A) {
+			m = A;
+		} else if (mp == MotorPort.B) {
+			m = B;
+		} else if (mp == MotorPort.C) {
+			m = C;
+		}
+
+		return m.isAngeschlossen(entsperreMotor);
+	}
+
 	protected final NXTRegulatedMotor motor;
 
 	protected final TachoMotorPort port;
@@ -51,6 +88,42 @@ public class Motor {
 	// DOCME
 	public TachoMotorPort getPort() {
 		return port;
+	}
+
+	/**
+	 * Testet, ob der Motor angeschlossen ist.<br>
+	 * Der Motor wird sich kurz bewegen und alle Bewegungen abbrechen. Außerdem
+	 * ist er dann frei beweglich.
+	 * 
+	 * @return angeschlossen?
+	 * @see Motor#isAngeschlossen(boolean)
+	 */
+	public boolean isAngeschlossen() {
+		return isAngeschlossen(true);
+	}
+
+	/**
+	 * Testet, ob der Motor angeschlossen ist.<br>
+	 * Der Motor wird sich kurz bewegen und alle Bewegungen abbrechen.
+	 * 
+	 * @param entsperreMotor
+	 *            Soll der Motor nach dem Test entsperrt werden?
+	 * @return angeschlossen?
+	 */
+	public boolean isAngeschlossen(boolean entsperreMotor) {
+		final int zählstandAlt;
+		final int zählstandNeu;
+
+		zählstandAlt = zählstand();
+		motor.rotate(1);
+		zählstandNeu = zählstand();
+		motor.rotate(-1);
+
+		if (entsperreMotor) {
+			motorFrei();
+		}
+
+		return zählstandAlt != zählstandNeu;
 	}
 
 	/**
